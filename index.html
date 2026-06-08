@@ -33,7 +33,6 @@
     min-height: 100vh;
   }
 
-  /* HEADER */
   .header {
     background: linear-gradient(135deg, #0d1b2e 0%, #1a3a5c 100%);
     padding: 18px 24px 0;
@@ -94,18 +93,15 @@
   }
   .nav-btn:hover { color: var(--white); }
 
-  /* MAIN */
   .main {
     max-width: 760px;
     margin: 0 auto;
     padding: 24px 16px 60px;
   }
 
-  /* TABS */
   .tab { display: none; }
   .tab.active { display: block; }
 
-  /* PONTUAÇÃO CARD */
   .score-card {
     background: var(--green-light);
     border: 1.5px solid #c9a84c40;
@@ -138,7 +134,6 @@
     align-items: center;
     gap: 6px;
   }
-  /* IDENTIFICAÇÃO */
   .section-card {
     background: var(--white);
     border-radius: var(--radius);
@@ -185,7 +180,6 @@
   }
   input:focus { border-color: var(--green-main); }
 
-  /* SAVE BUTTON */
   .btn-save {
     background: linear-gradient(135deg, #c9a84c, #e8c96a);
     color: #0d1b2e;
@@ -203,7 +197,6 @@
   .btn-save:active { transform: scale(0.97); }
   .btn-save:disabled { background: var(--gray-300); color: #fff; cursor: not-allowed; }
 
-  /* PHASE HEADER */
   .phase-header {
     background: linear-gradient(135deg, #0d1b2e 0%, #1a3a5c 100%);
     color: var(--white);
@@ -219,7 +212,7 @@
     border-left: 4px solid #c9a84c;
   }
 
-  /* GAME CARD */
+  /* GAME CARD — teams centered */
   .game-card {
     background: var(--white);
     border-radius: var(--radius);
@@ -237,20 +230,22 @@
   .game-meta {
     font-size: 11px;
     color: var(--gray-500);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     font-weight: 500;
+    text-align: center;
   }
   .game-teams {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
   }
   .team-name {
     font-size: 15px;
     font-weight: 700;
     flex: 1;
+    text-align: center;
   }
-  .team-name.right { text-align: right; }
   .vs-text {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 13px;
@@ -276,7 +271,6 @@
     color: var(--gray-300);
   }
 
-  /* RANKING */
   .ranking-table {
     background: var(--white);
     border-radius: var(--radius);
@@ -325,7 +319,6 @@
     margin-top: 2px;
   }
 
-  /* RANKING HEADER */
   .ranking-header {
     display: flex;
     align-items: center;
@@ -349,7 +342,6 @@
   }
   .btn-refresh:hover { background: #c9a84c15; }
 
-  /* ADMIN */
   .admin-lock {
     background: var(--white);
     border-radius: var(--radius);
@@ -373,7 +365,6 @@
   .admin-panel { display: none; }
   .admin-panel.active { display: block; }
 
-  /* RESULTS GRID */
   .results-grid {
     display: flex;
     flex-direction: column;
@@ -399,7 +390,6 @@
     font-weight: 400;
   }
 
-  /* TOAST */
   .toast {
     position: fixed;
     bottom: 24px;
@@ -420,7 +410,6 @@
   .toast.show { transform: translateX(-50%) translateY(0); }
   .toast.error { background: var(--red); }
 
-  /* LOADING */
   .loading {
     text-align: center;
     padding: 40px;
@@ -437,7 +426,6 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* EMPTY */
   .empty {
     text-align: center;
     padding: 40px;
@@ -445,21 +433,6 @@
     font-size: 14px;
   }
 
-  /* BADGE */
-  .badge {
-    display: inline-block;
-    padding: 3px 8px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-  }
-  .badge-group { background: #eef2f7; color: var(--green-mid); }
-  .badge-r16 { background: #fff3cd; color: #856404; }
-  .badge-qf { background: #fde8e8; color: #842029; }
-  .badge-sf { background: #e8e0f5; color: #4a1d8e; }
-  .badge-f { background: #fff0d4; color: #7a4500; }
-
-  /* BTN DANGER */
   .btn-danger {
     background: none;
     border: 1.5px solid var(--red);
@@ -474,7 +447,6 @@
   }
   .btn-danger:hover { background: #fde8e8; }
 
-  /* pill pts gold */
   .pill-pts {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 17px;
@@ -490,20 +462,19 @@
   .items-center { align-items: center; }
   .justify-between { justify-content: space-between; }
 
-  /* Collapsible groups */
   .games-section { margin-bottom: 20px; }
 
   @media (max-width: 480px) {
     .id-row { flex-direction: column; align-items: stretch; }
     .btn-save { width: 100%; }
-    .game-card { flex-direction: column; align-items: flex-start; }
-    .game-inputs { align-self: flex-end; }
+    .game-card { flex-direction: column; align-items: stretch; }
+    .game-inputs { align-self: center; }
+    .team-name { font-size: 13px; }
   }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-top">
     <div class="logo-icon">🏆</div>
@@ -521,10 +492,9 @@
 
 <div class="main">
 
-  <!-- ===== TAB: PALPITAR ===== -->
+  <!-- TAB: PALPITAR -->
   <div class="tab active" id="tab-palpitar">
 
-    <!-- Pontuação -->
     <div class="score-card">
       <div class="score-card-title">Pontuação</div>
       <div class="score-pills">
@@ -536,7 +506,6 @@
       </div>
     </div>
 
-    <!-- Identificação -->
     <div class="section-card">
       <div class="section-label">Identificação</div>
       <div class="id-row">
@@ -548,7 +517,6 @@
       </div>
     </div>
 
-    <!-- Jogos -->
     <div class="section-label mb-12">Jogos</div>
     <div id="jogosContainer">
       <div class="loading"><div class="spinner"></div>Carregando jogos...</div>
@@ -556,7 +524,7 @@
 
   </div>
 
-  <!-- ===== TAB: RANKING ===== -->
+  <!-- TAB: RANKING -->
   <div class="tab" id="tab-ranking">
     <div class="ranking-header">
       <div class="section-label" style="margin:0">Classificação</div>
@@ -567,10 +535,9 @@
     </div>
   </div>
 
-  <!-- ===== TAB: ADMIN ===== -->
+  <!-- TAB: ADMIN -->
   <div class="tab" id="tab-admin">
 
-    <!-- Login -->
     <div class="admin-lock" id="adminLock">
       <div style="font-size:36px;margin-bottom:12px">🔐</div>
       <h2>Área Restrita</h2>
@@ -582,7 +549,6 @@
       <button class="btn-save" style="width:100%" onclick="adminLogin()">Entrar no painel</button>
     </div>
 
-    <!-- Painel Admin -->
     <div class="admin-panel" id="adminPanel">
       <div class="flex items-center justify-between mb-12">
         <div class="section-label" style="margin:0">Lançar Resultados</div>
@@ -599,58 +565,162 @@
 
 </div>
 
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ============================================================
-// CONFIGURAÇÃO — substitua pela URL do seu Apps Script
-// ============================================================
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxD98qHxM4IZrngx1xj_3jM5tEVD0ZO3TT1ttuQJ1pvnZlhaLnzGGWQF42VeTUZfs1G/exec';
-const ADMIN_PASSWORD = 'lemon2026'; // pode mudar, mas a senha real fica no Apps Script
+const ADMIN_PASSWORD = 'lemon2026';
 
 // ============================================================
-// JOGOS — edite aqui ou carregue da planilha
+// JOGOS — Copa do Mundo 2026 (dados reais)
+// Grupos A–L com 4 times cada, 3 rodadas por grupo
 // ============================================================
 const JOGOS = [
-  // FASE DE GRUPOS — exemplos iniciais. Complete com todos os jogos.
-  { id: 'G001', fase: 'Fase de Grupos', grupo: 'Grupo A', time1: 'Qatar',       time2: 'Equador',   data: '11/06' },
-  { id: 'G002', fase: 'Fase de Grupos', grupo: 'Grupo A', time1: 'Senegal',     time2: 'Holanda',   data: '11/06' },
-  { id: 'G003', fase: 'Fase de Grupos', grupo: 'Grupo B', time1: 'Inglaterra',  time2: 'Irã',       data: '13/06' },
-  { id: 'G004', fase: 'Fase de Grupos', grupo: 'Grupo B', time1: 'EUA',         time2: 'País de Gales', data: '13/06' },
-  { id: 'G005', fase: 'Fase de Grupos', grupo: 'Grupo C', time1: 'Argentina',   time2: 'Arábia Saudita', data: '22/06' },
-  { id: 'G006', fase: 'Fase de Grupos', grupo: 'Grupo C', time1: 'México',      time2: 'Polônia',   data: '22/06' },
-  { id: 'G007', fase: 'Fase de Grupos', grupo: 'Grupo D', time1: 'França',      time2: 'Austrália', data: '23/06' },
-  { id: 'G008', fase: 'Fase de Grupos', grupo: 'Grupo D', time1: 'Dinamarca',   time2: 'Tunísia',   data: '23/06' },
-  { id: 'G009', fase: 'Fase de Grupos', grupo: 'Grupo E', time1: 'Alemanha',    time2: 'Japão',     data: '23/06' },
-  { id: 'G010', fase: 'Fase de Grupos', grupo: 'Grupo E', time1: 'Espanha',     time2: 'Costa Rica',data: '23/06' },
-  { id: 'G011', fase: 'Fase de Grupos', grupo: 'Grupo F', time1: 'Bélgica',     time2: 'Canadá',    data: '23/06' },
-  { id: 'G012', fase: 'Fase de Grupos', grupo: 'Grupo F', time1: 'Marrocos',    time2: 'Croácia',   data: '23/06' },
-  { id: 'G013', fase: 'Fase de Grupos', grupo: 'Grupo G', time1: 'Brasil',      time2: 'Sérvia',    data: '24/06' },
-  { id: 'G014', fase: 'Fase de Grupos', grupo: 'Grupo G', time1: 'Suíça',       time2: 'Camarões',  data: '24/06' },
-  { id: 'G015', fase: 'Fase de Grupos', grupo: 'Grupo H', time1: 'Portugal',    time2: 'Gana',      data: '24/06' },
-  { id: 'G016', fase: 'Fase de Grupos', grupo: 'Grupo H', time1: 'Uruguai',     time2: 'Coreia do Sul', data: '24/06' },
-    // OITAVAS DE FINAL (16 jogos)
-  { id: 'O001', fase: 'Oitavas de Final', grupo: 'Oitavas de Final', time1: 'A definir', time2: 'A definir', data: '29/06' },
-  { id: 'O002', fase: 'Oitavas de Final', grupo: 'Oitavas de Final', time1: 'A definir', time2: 'A definir', data: '29/06' },
-   // ... O003 até O016
+  // ── GRUPO A: México, África do Sul, Coreia do Sul, Rep. Tcheca ──
+  { id:'A001', fase:'Fase de Grupos', grupo:'Grupo A', time1:'México',        time2:'África do Sul',  data:'11/06' },
+  { id:'A002', fase:'Fase de Grupos', grupo:'Grupo A', time1:'Coreia do Sul', time2:'Rep. Tcheca',    data:'11/06' },
+  { id:'A003', fase:'Fase de Grupos', grupo:'Grupo A', time1:'México',        time2:'Coreia do Sul',  data:'22/06' },
+  { id:'A004', fase:'Fase de Grupos', grupo:'Grupo A', time1:'África do Sul', time2:'Rep. Tcheca',    data:'18/06' },
+  { id:'A005', fase:'Fase de Grupos', grupo:'Grupo A', time1:'México',        time2:'Rep. Tcheca',    data:'24/06' },
+  { id:'A006', fase:'Fase de Grupos', grupo:'Grupo A', time1:'África do Sul', time2:'Coreia do Sul',  data:'24/06' },
 
-  // QUARTAS DE FINAL (8 jogos)
-  { id: 'Q001', fase: 'Quartas de Final', grupo: 'Quartas de Final', time1: 'A definir', time2: 'A definir', data: '04/07' },
-  // ... Q002 até Q008
+  // ── GRUPO B: Canadá, Catar, Suíça, Itália ──
+  { id:'B001', fase:'Fase de Grupos', grupo:'Grupo B', time1:'Canadá',  time2:'Itália',  data:'12/06' },
+  { id:'B002', fase:'Fase de Grupos', grupo:'Grupo B', time1:'Catar',   time2:'Suíça',   data:'13/06' },
+  { id:'B003', fase:'Fase de Grupos', grupo:'Grupo B', time1:'Canadá',  time2:'Catar',   data:'19/06' },
+  { id:'B004', fase:'Fase de Grupos', grupo:'Grupo B', time1:'Suíça',   time2:'Itália',  data:'18/06' },
+  { id:'B005', fase:'Fase de Grupos', grupo:'Grupo B', time1:'Suíça',   time2:'Canadá',  data:'24/06' },
+  { id:'B006', fase:'Fase de Grupos', grupo:'Grupo B', time1:'Itália',  time2:'Catar',   data:'24/06' },
 
-  // SEMIFINAL (4 jogos)
-  { id: 'S001', fase: 'Semifinal', grupo: 'Semifinal', time1: 'A definir', time2: 'A definir', data: '09/07' },
-  // ... S002 até S004 (sendo S003 o terceiro lugar)
+  // ── GRUPO C: Brasil, Marrocos, Haiti, Escócia ──
+  { id:'C001', fase:'Fase de Grupos', grupo:'Grupo C', time1:'Brasil',   time2:'Marrocos', data:'13/06' },
+  { id:'C002', fase:'Fase de Grupos', grupo:'Grupo C', time1:'Haiti',    time2:'Escócia',  data:'13/06' },
+  { id:'C003', fase:'Fase de Grupos', grupo:'Grupo C', time1:'Escócia',  time2:'Marrocos', data:'19/06' },
+  { id:'C004', fase:'Fase de Grupos', grupo:'Grupo C', time1:'Brasil',   time2:'Haiti',    data:'19/06' },
+  { id:'C005', fase:'Fase de Grupos', grupo:'Grupo C', time1:'Escócia',  time2:'Brasil',   data:'24/06' },
+  { id:'C006', fase:'Fase de Grupos', grupo:'Grupo C', time1:'Marrocos', time2:'Haiti',    data:'24/06' },
 
-  // FINAL
-  { id: 'F001', fase: 'Final', grupo: 'Final', time1: 'A definir', time2: 'A definir', data: '19/07' },
+  // ── GRUPO D: EUA, Paraguai, Austrália, Turquia ──
+  { id:'D001', fase:'Fase de Grupos', grupo:'Grupo D', time1:'Estados Unidos', time2:'Paraguai',   data:'12/06' },
+  { id:'D002', fase:'Fase de Grupos', grupo:'Grupo D', time1:'Austrália',      time2:'Turquia',    data:'13/06' },
+  { id:'D003', fase:'Fase de Grupos', grupo:'Grupo D', time1:'Estados Unidos', time2:'Austrália',  data:'16/06' },
+  { id:'D004', fase:'Fase de Grupos', grupo:'Grupo D', time1:'Turquia',        time2:'Paraguai',   data:'19/06' },
+  { id:'D005', fase:'Fase de Grupos', grupo:'Grupo D', time1:'Turquia',        time2:'Estados Unidos', data:'25/06' },
+  { id:'D006', fase:'Fase de Grupos', grupo:'Grupo D', time1:'Paraguai',       time2:'Austrália',  data:'25/06' },
+
+  // ── GRUPO E: Alemanha, Curaçao, Costa do Marfim, Equador ──
+  { id:'E001', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Alemanha',        time2:'Curaçao',         data:'14/06' },
+  { id:'E002', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Costa do Marfim', time2:'Equador',         data:'14/06' },
+  { id:'E003', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Alemanha',        time2:'Costa do Marfim', data:'20/06' },
+  { id:'E004', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Equador',         time2:'Curaçao',         data:'21/06' },
+  { id:'E005', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Equador',         time2:'Alemanha',        data:'25/06' },
+  { id:'E006', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Curaçao',         time2:'Costa do Marfim', data:'25/06' },
+
+  // ── GRUPO F: Holanda, Japão, Tunísia, Ucrânia ──
+  { id:'F001', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Holanda',  time2:'Japão',    data:'14/06' },
+  { id:'F002', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Ucrânia',  time2:'Tunísia',  data:'14/06' },
+  { id:'F003', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Holanda',  time2:'Ucrânia',  data:'20/06' },
+  { id:'F004', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Tunísia',  time2:'Japão',    data:'21/06' },
+  { id:'F005', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Japão',    time2:'Ucrânia',  data:'25/06' },
+  { id:'F006', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Tunísia',  time2:'Holanda',  data:'25/06' },
+
+  // ── GRUPO G: Bélgica, Egito, Irã, Nova Zelândia ──
+  { id:'G001', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Bélgica',       time2:'Egito',         data:'15/06' },
+  { id:'G002', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Irã',           time2:'Nova Zelândia', data:'15/06' },
+  { id:'G003', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Bélgica',       time2:'Irã',           data:'21/06' },
+  { id:'G004', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Nova Zelândia', time2:'Egito',         data:'21/06' },
+  { id:'G005', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Nova Zelândia', time2:'Bélgica',       data:'27/06' },
+  { id:'G006', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Egito',         time2:'Irã',           data:'27/06' },
+
+  // ── GRUPO H: Espanha, Cabo Verde, Arábia Saudita, Uruguai ──
+  { id:'H001', fase:'Fase de Grupos', grupo:'Grupo H', time1:'Espanha',       time2:'Cabo Verde',    data:'15/06' },
+  { id:'H002', fase:'Fase de Grupos', grupo:'Grupo H', time1:'Arábia Saudita',time2:'Uruguai',       data:'15/06' },
+  { id:'H003', fase:'Fase de Grupos', grupo:'Grupo H', time1:'Espanha',       time2:'Arábia Saudita',data:'21/06' },
+  { id:'H004', fase:'Fase de Grupos', grupo:'Grupo H', time1:'Uruguai',       time2:'Cabo Verde',    data:'21/06' },
+  { id:'H005', fase:'Fase de Grupos', grupo:'Grupo H', time1:'Cabo Verde',    time2:'Arábia Saudita',data:'26/06' },
+  { id:'H006', fase:'Fase de Grupos', grupo:'Grupo H', time1:'Uruguai',       time2:'Espanha',       data:'26/06' },
+
+  // ── GRUPO I: França, Senegal, Noruega, Iraque ──
+  { id:'I001', fase:'Fase de Grupos', grupo:'Grupo I', time1:'França',   time2:'Senegal',  data:'16/06' },
+  { id:'I002', fase:'Fase de Grupos', grupo:'Grupo I', time1:'Iraque',   time2:'Noruega',  data:'16/06' },
+  { id:'I003', fase:'Fase de Grupos', grupo:'Grupo I', time1:'França',   time2:'Iraque',   data:'22/06' },
+  { id:'I004', fase:'Fase de Grupos', grupo:'Grupo I', time1:'Noruega',  time2:'Senegal',  data:'22/06' },
+  { id:'I005', fase:'Fase de Grupos', grupo:'Grupo I', time1:'Noruega',  time2:'França',   data:'26/06' },
+  { id:'I006', fase:'Fase de Grupos', grupo:'Grupo I', time1:'Senegal',  time2:'Iraque',   data:'26/06' },
+
+  // ── GRUPO J: Argentina, Argélia, Áustria, Jordânia ──
+  { id:'J001', fase:'Fase de Grupos', grupo:'Grupo J', time1:'Argentina', time2:'Argélia',  data:'16/06' },
+  { id:'J002', fase:'Fase de Grupos', grupo:'Grupo J', time1:'Áustria',   time2:'Jordânia', data:'17/06' },
+  { id:'J003', fase:'Fase de Grupos', grupo:'Grupo J', time1:'Argentina', time2:'Áustria',  data:'22/06' },
+  { id:'J004', fase:'Fase de Grupos', grupo:'Grupo J', time1:'Jordânia',  time2:'Argélia',  data:'23/06' },
+  { id:'J005', fase:'Fase de Grupos', grupo:'Grupo J', time1:'Jordânia',  time2:'Argentina',data:'27/06' },
+  { id:'J006', fase:'Fase de Grupos', grupo:'Grupo J', time1:'Argélia',   time2:'Áustria',  data:'27/06' },
+
+  // ── GRUPO K: Portugal, Uzbequistão, Colômbia, Congo ──
+  { id:'K001', fase:'Fase de Grupos', grupo:'Grupo K', time1:'Portugal',    time2:'Congo DR',     data:'17/06' },
+  { id:'K002', fase:'Fase de Grupos', grupo:'Grupo K', time1:'Uzbequistão', time2:'Colômbia',     data:'17/06' },
+  { id:'K003', fase:'Fase de Grupos', grupo:'Grupo K', time1:'Portugal',    time2:'Uzbequistão',  data:'23/06' },
+  { id:'K004', fase:'Fase de Grupos', grupo:'Grupo K', time1:'Colômbia',    time2:'Congo DR',     data:'23/06' },
+  { id:'K005', fase:'Fase de Grupos', grupo:'Grupo K', time1:'Colômbia',    time2:'Portugal',     data:'27/06' },
+  { id:'K006', fase:'Fase de Grupos', grupo:'Grupo K', time1:'Congo DR',    time2:'Uzbequistão',  data:'27/06' },
+
+  // ── GRUPO L: Inglaterra, Croácia, Gana, Panamá ──
+  { id:'L001', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Inglaterra', time2:'Croácia', data:'17/06' },
+  { id:'L002', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Gana',       time2:'Panamá',  data:'17/06' },
+  { id:'L003', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Inglaterra', time2:'Gana',    data:'23/06' },
+  { id:'L004', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Panamá',     time2:'Croácia', data:'23/06' },
+  { id:'L005', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Panamá',     time2:'Inglaterra', data:'27/06' },
+  { id:'L006', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Croácia',    time2:'Gana',    data:'27/06' },
+
+  // ── RODADA DE 32 (16 jogos) ──
+  { id:'R001', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'28/06' },
+  { id:'R002', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'28/06' },
+  { id:'R003', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'29/06' },
+  { id:'R004', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'29/06' },
+  { id:'R005', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'30/06' },
+  { id:'R006', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'30/06' },
+  { id:'R007', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'01/07' },
+  { id:'R008', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'01/07' },
+  { id:'R009', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'02/07' },
+  { id:'R010', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'02/07' },
+  { id:'R011', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'03/07' },
+  { id:'R012', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'03/07' },
+  { id:'R013', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'04/07' },
+  { id:'R014', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'04/07' },
+  { id:'R015', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'05/07' },
+  { id:'R016', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'05/07' },
+
+  // ── OITAVAS DE FINAL (8 jogos) ──
+  { id:'O001', fase:'Oitavas de Final', grupo:'Oitavas de Final', time1:'A definir', time2:'A definir', data:'06/07' },
+  { id:'O002', fase:'Oitavas de Final', grupo:'Oitavas de Final', time1:'A definir', time2:'A definir', data:'06/07' },
+  { id:'O003', fase:'Oitavas de Final', grupo:'Oitavas de Final', time1:'A definir', time2:'A definir', data:'07/07' },
+  { id:'O004', fase:'Oitavas de Final', grupo:'Oitavas de Final', time1:'A definir', time2:'A definir', data:'07/07' },
+  { id:'O005', fase:'Oitavas de Final', grupo:'Oitavas de Final', time1:'A definir', time2:'A definir', data:'08/07' },
+  { id:'O006', fase:'Oitavas de Final', grupo:'Oitavas de Final', time1:'A definir', time2:'A definir', data:'08/07' },
+  { id:'O007', fase:'Oitavas de Final', grupo:'Oitavas de Final', time1:'A definir', time2:'A definir', data:'09/07' },
+  { id:'O008', fase:'Oitavas de Final', grupo:'Oitavas de Final', time1:'A definir', time2:'A definir', data:'09/07' },
+
+  // ── QUARTAS DE FINAL (4 jogos) ──
+  { id:'Q001', fase:'Quartas de Final', grupo:'Quartas de Final', time1:'A definir', time2:'A definir', data:'11/07' },
+  { id:'Q002', fase:'Quartas de Final', grupo:'Quartas de Final', time1:'A definir', time2:'A definir', data:'11/07' },
+  { id:'Q003', fase:'Quartas de Final', grupo:'Quartas de Final', time1:'A definir', time2:'A definir', data:'12/07' },
+  { id:'Q004', fase:'Quartas de Final', grupo:'Quartas de Final', time1:'A definir', time2:'A definir', data:'12/07' },
+
+  // ── SEMIFINAL (2 jogos) ──
+  { id:'S001', fase:'Semifinal', grupo:'Semifinal', time1:'A definir', time2:'A definir', data:'14/07' },
+  { id:'S002', fase:'Semifinal', grupo:'Semifinal', time1:'A definir', time2:'A definir', data:'15/07' },
+
+  // ── TERCEIRO LUGAR ──
+  { id:'T001', fase:'Terceiro Lugar', grupo:'Terceiro Lugar', time1:'A definir', time2:'A definir', data:'18/07' },
+
+  // ── FINAL ──
+  { id:'F001', fase:'Final', grupo:'Final', time1:'A definir', time2:'A definir', data:'19/07' },
 ];
 
 // ============================================================
 // ESTADO
 // ============================================================
-let palpitesLocais = {}; // { jogoId: { t1: X, t2: Y } }
+let palpitesLocais = {};
 let adminLoggedIn = false;
 let resultadosAdmin = {};
 
@@ -667,20 +737,18 @@ function showTab(tab, btn) {
 }
 
 // ============================================================
-// RENDER JOGOS (PALPITAR)
+// RENDER JOGOS
 // ============================================================
 function renderJogos() {
   const container = document.getElementById('jogosContainer');
   if (!JOGOS.length) { container.innerHTML = '<div class="empty">Nenhum jogo cadastrado.</div>'; return; }
 
-  // Agrupar por fase e grupo
   const phases = {};
   JOGOS.forEach(j => {
-    const key = j.fase;
-    if (!phases[key]) phases[key] = {};
+    if (!phases[j.fase]) phases[j.fase] = {};
     const gKey = j.grupo || j.fase;
-    if (!phases[key][gKey]) phases[key][gKey] = [];
-    phases[key][gKey].push(j);
+    if (!phases[j.fase][gKey]) phases[j.fase][gKey] = [];
+    phases[j.fase][gKey].push(j);
   });
 
   let html = '';
@@ -697,7 +765,7 @@ function renderJogos() {
             <div class="game-teams">
               <span class="team-name">${j.time1}</span>
               <span class="vs-text">VS</span>
-              <span class="team-name right">${j.time2}</span>
+              <span class="team-name">${j.time2}</span>
             </div>
           </div>
           <div class="game-inputs">
@@ -719,7 +787,7 @@ function savePalpiteLocal(jogoId) {
 }
 
 // ============================================================
-// SALVAR PALPITES → SHEETS
+// SALVAR PALPITES
 // ============================================================
 async function savePalpites() {
   const name = document.getElementById('playerName').value.trim();
@@ -891,9 +959,7 @@ function showToast(msg, isError = false) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ============================================================
 // INIT
-// ============================================================
 renderJogos();
 </script>
 </body>
