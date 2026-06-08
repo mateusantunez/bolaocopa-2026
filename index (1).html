@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolão Copa 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-dark: #0d1b2e;
+    --green-mid: #1a3a5c;
+    --green-main: #c9a84c;
+    --green-light: #eef2f7;
+    --green-pale: #f5f7fa;
+    --yellow: #c9a84c;
+    --white: #ffffff;
+    --gray-100: #f0f2f5;
+    --gray-300: #cdd2da;
+    --gray-500: #7a8394;
+    --gray-700: #3a4252;
+    --red: #e05252;
+    --text: #0d1b2e;
+    --radius: 12px;
+    --shadow: 0 2px 20px rgba(13,27,46,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--green-pale);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0d1b2e 0%, #1a3a5c 100%);
+    padding: 18px 24px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 2px solid #c9a84c40;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .logo-icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, #c9a84c, #e8c96a);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .header-title h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--white);
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+  .header-title p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 2px;
+  }
+  .nav {
+    display: flex;
+    gap: 0;
+    width: 100%;
+    max-width: 760px;
+  }
+  .nav-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.55);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 12px 0;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .nav-btn.active {
+    color: var(--white);
+    border-bottom-color: var(--yellow);
+  }
+  .nav-btn:hover { color: var(--white); }
+
+  /* MAIN */
+  .main {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+
+  /* TABS */
+  .tab { display: none; }
+  .tab.active { display: block; }
+
+  /* PONTUAÇÃO CARD */
+  .score-card {
+    background: var(--green-light);
+    border: 1.5px solid #c9a84c40;
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 20px;
+  }
+  .score-card-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--green-main);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .score-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pill {
+    background: var(--white);
+    border: 1px solid #c9a84c30;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pill-pts-old-removed {
+
+  /* IDENTIFICAÇÃO */
+  .section-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--green-main);
+    margin-bottom: 14px;
+  }
+  .id-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+  }
+  .input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .input-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  input[type="text"], input[type="password"], input[type="number"] {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border 0.2s;
+    width: 100%;
+  }
+  input:focus { border-color: var(--green-main); }
+
+  /* SAVE BUTTON */
+  .btn-save {
+    background: linear-gradient(135deg, #c9a84c, #e8c96a);
+    color: #0d1b2e;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 22px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .btn-save:hover { opacity: 0.88; }
+  .btn-save:active { transform: scale(0.97); }
+  .btn-save:disabled { background: var(--gray-300); color: #fff; cursor: not-allowed; }
+
+  /* PHASE HEADER */
+  .phase-header {
+    background: linear-gradient(135deg, #0d1b2e 0%, #1a3a5c 100%);
+    color: var(--white);
+    border-radius: var(--radius);
+    padding: 13px 18px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 4px solid #c9a84c;
+  }
+
+  /* GAME CARD */
+  .game-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .game-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .game-meta {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .game-teams {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .team-name {
+    font-size: 15px;
+    font-weight: 700;
+    flex: 1;
+  }
+  .team-name.right { text-align: right; }
+  .vs-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    color: var(--gray-500);
+    flex-shrink: 0;
+  }
+  .game-inputs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .score-input {
+    width: 44px;
+    text-align: center;
+    padding: 8px 4px !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+  }
+  .score-sep {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--gray-300);
+  }
+
+  /* RANKING */
+  .ranking-table {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .ranking-row {
+    display: flex;
+    align-items: center;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--gray-100);
+    transition: background 0.15s;
+    gap: 14px;
+  }
+  .ranking-row:last-child { border-bottom: none; }
+  .ranking-row:hover { background: #c9a84c08; }
+  .rank-pos {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--gray-300);
+    width: 30px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .rank-pos.gold { color: #f5c842; }
+  .rank-pos.silver { color: #b0b8c1; }
+  .rank-pos.bronze { color: #cd7f32; }
+  .rank-name {
+    flex: 1;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .rank-pts {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    color: var(--green-main);
+  }
+  .rank-pts-label {
+    font-size: 11px;
+    color: var(--gray-500);
+    font-weight: 500;
+  }
+  .rank-detail {
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-top: 2px;
+  }
+
+  /* RANKING HEADER */
+  .ranking-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .btn-refresh {
+    background: none;
+    border: 1.5px solid var(--green-main);
+    color: var(--green-main);
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-refresh:hover { background: #c9a84c15; }
+
+  /* ADMIN */
+  .admin-lock {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    box-shadow: var(--shadow);
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .admin-lock h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    margin-bottom: 6px;
+    color: var(--green-mid);
+  }
+  .admin-lock p {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-bottom: 20px;
+  }
+  .admin-panel { display: none; }
+  .admin-panel.active { display: block; }
+
+  /* RESULTS GRID */
+  .results-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .result-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .result-teams {
+    flex: 1;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .result-meta {
+    font-size: 11px;
+    color: var(--gray-500);
+    font-weight: 400;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: #0d1b2e;
+    color: var(--white);
+    padding: 14px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    z-index: 9999;
+    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+    text-align: center;
+    border: 1px solid #c9a84c40;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: var(--red); }
+
+  /* LOADING */
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: var(--gray-500);
+    font-size: 14px;
+  }
+  .spinner {
+    width: 28px; height: 28px;
+    border: 3px solid var(--gray-300);
+    border-top-color: var(--green-main);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* EMPTY */
+  .empty {
+    text-align: center;
+    padding: 40px;
+    color: var(--gray-500);
+    font-size: 14px;
+  }
+
+  /* BADGE */
+  .badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .badge-group { background: #eef2f7; color: var(--green-mid); }
+  .badge-r16 { background: #fff3cd; color: #856404; }
+  .badge-qf { background: #fde8e8; color: #842029; }
+  .badge-sf { background: #e8e0f5; color: #4a1d8e; }
+  .badge-f { background: #fff0d4; color: #7a4500; }
+
+  /* BTN DANGER */
+  .btn-danger {
+    background: none;
+    border: 1.5px solid var(--red);
+    color: var(--red);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-danger:hover { background: #fde8e8; }
+
+  /* pill pts gold */
+  .pill-pts {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 17px;
+    color: var(--green-main);
+  }
+
+  .mt-16 { margin-top: 16px; }
+  .mt-20 { margin-top: 20px; }
+  .mb-12 { margin-bottom: 12px; }
+  .gap-8 { gap: 8px; }
+  .flex { display: flex; }
+  .flex-col { flex-direction: column; }
+  .items-center { align-items: center; }
+  .justify-between { justify-content: space-between; }
+
+  /* Collapsible groups */
+  .games-section { margin-bottom: 20px; }
+
+  @media (max-width: 480px) {
+    .id-row { flex-direction: column; align-items: stretch; }
+    .btn-save { width: 100%; }
+    .game-card { flex-direction: column; align-items: flex-start; }
+    .game-inputs { align-self: flex-end; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="logo-icon">🏆</div>
+    <div class="header-title">
+      <h1>BOLÃO COPA 2026</h1>
+      <p>EUA · México · Canadá — 11 Jun a 19 Jul</p>
+    </div>
+  </div>
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showTab('palpitar', this)">⚽ Palpitar</button>
+    <button class="nav-btn" onclick="showTab('ranking', this)">🏆 Ranking</button>
+    <button class="nav-btn" onclick="showTab('admin', this)">🔧 Admin</button>
+  </nav>
+</div>
+
+<div class="main">
+
+  <!-- ===== TAB: PALPITAR ===== -->
+  <div class="tab active" id="tab-palpitar">
+
+    <!-- Pontuação -->
+    <div class="score-card">
+      <div class="score-card-title">Pontuação</div>
+      <div class="score-pills">
+        <div class="pill"><span class="pill-pts">15</span> 🎯 Placar exato</div>
+        <div class="pill"><span class="pill-pts">10</span> ✅ Vencedor + gols de 1 time</div>
+        <div class="pill"><span class="pill-pts">5</span> 🔥 Só o resultado certo</div>
+        <div class="pill"><span class="pill-pts">2</span> 〰️ 1 placar certo, errou resultado</div>
+        <div class="pill"><span class="pill-pts">0</span> ❌ Errou tudo</div>
+      </div>
+    </div>
+
+    <!-- Identificação -->
+    <div class="section-card">
+      <div class="section-label">Identificação</div>
+      <div class="id-row">
+        <div class="input-group">
+          <label>Seu nome</label>
+          <input type="text" id="playerName" placeholder="Ex: João Silva" autocomplete="off">
+        </div>
+        <button class="btn-save" onclick="savePalpites()">Salvar palpites</button>
+      </div>
+    </div>
+
+    <!-- Jogos -->
+    <div class="section-label mb-12">Jogos</div>
+    <div id="jogosContainer">
+      <div class="loading"><div class="spinner"></div>Carregando jogos...</div>
+    </div>
+
+  </div>
+
+  <!-- ===== TAB: RANKING ===== -->
+  <div class="tab" id="tab-ranking">
+    <div class="ranking-header">
+      <div class="section-label" style="margin:0">Classificação</div>
+      <button class="btn-refresh" onclick="loadRanking()">↻ Atualizar</button>
+    </div>
+    <div id="rankingContainer">
+      <div class="loading"><div class="spinner"></div>Carregando ranking...</div>
+    </div>
+  </div>
+
+  <!-- ===== TAB: ADMIN ===== -->
+  <div class="tab" id="tab-admin">
+
+    <!-- Login -->
+    <div class="admin-lock" id="adminLock">
+      <div style="font-size:36px;margin-bottom:12px">🔐</div>
+      <h2>Área Restrita</h2>
+      <p>Acesso somente para administradores do bolão.</p>
+      <div class="input-group mb-12">
+        <label>Senha</label>
+        <input type="password" id="adminPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()">
+      </div>
+      <button class="btn-save" style="width:100%" onclick="adminLogin()">Entrar no painel</button>
+    </div>
+
+    <!-- Painel Admin -->
+    <div class="admin-panel" id="adminPanel">
+      <div class="flex items-center justify-between mb-12">
+        <div class="section-label" style="margin:0">Lançar Resultados</div>
+        <button class="btn-danger" onclick="adminLogout()">Sair</button>
+      </div>
+      <p style="font-size:13px;color:var(--gray-500);margin-bottom:16px">Preencha apenas jogos já disputados e clique em Salvar Resultados.</p>
+      <div id="adminJogosContainer">
+        <div class="loading"><div class="spinner"></div>Carregando jogos...</div>
+      </div>
+      <button class="btn-save mt-16" style="width:100%" onclick="saveResultados()">💾 Salvar Resultados</button>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================================
+// CONFIGURAÇÃO — substitua pela URL do seu Apps Script
+// ============================================================
+const SCRIPT_URL = 'COLE_AQUI_A_URL_DO_APPS_SCRIPT';
+const ADMIN_PASSWORD = 'lemon2026'; // pode mudar, mas a senha real fica no Apps Script
+
+// ============================================================
+// JOGOS — edite aqui ou carregue da planilha
+// ============================================================
+const JOGOS = [
+  // FASE DE GRUPOS — exemplos iniciais. Complete com todos os jogos.
+  { id: 'G001', fase: 'Fase de Grupos', grupo: 'Grupo A', time1: 'Qatar',       time2: 'Equador',   data: '11/06' },
+  { id: 'G002', fase: 'Fase de Grupos', grupo: 'Grupo A', time1: 'Senegal',     time2: 'Holanda',   data: '11/06' },
+  { id: 'G003', fase: 'Fase de Grupos', grupo: 'Grupo B', time1: 'Inglaterra',  time2: 'Irã',       data: '13/06' },
+  { id: 'G004', fase: 'Fase de Grupos', grupo: 'Grupo B', time1: 'EUA',         time2: 'País de Gales', data: '13/06' },
+  { id: 'G005', fase: 'Fase de Grupos', grupo: 'Grupo C', time1: 'Argentina',   time2: 'Arábia Saudita', data: '22/06' },
+  { id: 'G006', fase: 'Fase de Grupos', grupo: 'Grupo C', time1: 'México',      time2: 'Polônia',   data: '22/06' },
+  { id: 'G007', fase: 'Fase de Grupos', grupo: 'Grupo D', time1: 'França',      time2: 'Austrália', data: '23/06' },
+  { id: 'G008', fase: 'Fase de Grupos', grupo: 'Grupo D', time1: 'Dinamarca',   time2: 'Tunísia',   data: '23/06' },
+  { id: 'G009', fase: 'Fase de Grupos', grupo: 'Grupo E', time1: 'Alemanha',    time2: 'Japão',     data: '23/06' },
+  { id: 'G010', fase: 'Fase de Grupos', grupo: 'Grupo E', time1: 'Espanha',     time2: 'Costa Rica',data: '23/06' },
+  { id: 'G011', fase: 'Fase de Grupos', grupo: 'Grupo F', time1: 'Bélgica',     time2: 'Canadá',    data: '23/06' },
+  { id: 'G012', fase: 'Fase de Grupos', grupo: 'Grupo F', time1: 'Marrocos',    time2: 'Croácia',   data: '23/06' },
+  { id: 'G013', fase: 'Fase de Grupos', grupo: 'Grupo G', time1: 'Brasil',      time2: 'Sérvia',    data: '24/06' },
+  { id: 'G014', fase: 'Fase de Grupos', grupo: 'Grupo G', time1: 'Suíça',       time2: 'Camarões',  data: '24/06' },
+  { id: 'G015', fase: 'Fase de Grupos', grupo: 'Grupo H', time1: 'Portugal',    time2: 'Gana',      data: '24/06' },
+  { id: 'G016', fase: 'Fase de Grupos', grupo: 'Grupo H', time1: 'Uruguai',     time2: 'Coreia do Sul', data: '24/06' },
+];
+
+// ============================================================
+// ESTADO
+// ============================================================
+let palpitesLocais = {}; // { jogoId: { t1: X, t2: Y } }
+let adminLoggedIn = false;
+let resultadosAdmin = {};
+
+// ============================================================
+// TABS
+// ============================================================
+function showTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  btn.classList.add('active');
+  if (tab === 'ranking') loadRanking();
+  if (tab === 'admin' && adminLoggedIn) loadAdminJogos();
+}
+
+// ============================================================
+// RENDER JOGOS (PALPITAR)
+// ============================================================
+function renderJogos() {
+  const container = document.getElementById('jogosContainer');
+  if (!JOGOS.length) { container.innerHTML = '<div class="empty">Nenhum jogo cadastrado.</div>'; return; }
+
+  // Agrupar por fase e grupo
+  const phases = {};
+  JOGOS.forEach(j => {
+    const key = j.fase;
+    if (!phases[key]) phases[key] = {};
+    const gKey = j.grupo || j.fase;
+    if (!phases[key][gKey]) phases[key][gKey] = [];
+    phases[key][gKey].push(j);
+  });
+
+  let html = '';
+  for (const fase in phases) {
+    html += `<div class="phase-header">🌐 ${fase.toUpperCase()}</div>`;
+    for (const grupo in phases[fase]) {
+      if (grupo !== fase) html += `<div style="font-size:12px;font-weight:700;color:var(--green-main);text-transform:uppercase;letter-spacing:1px;margin:12px 0 8px">${grupo}</div>`;
+      phases[fase][grupo].forEach(j => {
+        const p = palpitesLocais[j.id] || { t1: '', t2: '' };
+        html += `
+        <div class="game-card">
+          <div class="game-info">
+            <div class="game-meta">${j.data} &nbsp;·&nbsp; ${j.grupo || j.fase}</div>
+            <div class="game-teams">
+              <span class="team-name">${j.time1}</span>
+              <span class="vs-text">VS</span>
+              <span class="team-name right">${j.time2}</span>
+            </div>
+          </div>
+          <div class="game-inputs">
+            <input type="number" class="score-input" id="p_${j.id}_1" min="0" max="99" value="${p.t1}" placeholder="–" oninput="savePalpiteLocal('${j.id}')">
+            <span class="score-sep">:</span>
+            <input type="number" class="score-input" id="p_${j.id}_2" min="0" max="99" value="${p.t2}" placeholder="–" oninput="savePalpiteLocal('${j.id}')">
+          </div>
+        </div>`;
+      });
+    }
+  }
+  container.innerHTML = html;
+}
+
+function savePalpiteLocal(jogoId) {
+  const v1 = document.getElementById('p_' + jogoId + '_1').value;
+  const v2 = document.getElementById('p_' + jogoId + '_2').value;
+  palpitesLocais[jogoId] = { t1: v1, t2: v2 };
+}
+
+// ============================================================
+// SALVAR PALPITES → SHEETS
+// ============================================================
+async function savePalpites() {
+  const name = document.getElementById('playerName').value.trim();
+  if (!name) { showToast('Digite seu nome antes de salvar!', true); return; }
+
+  const entries = [];
+  JOGOS.forEach(j => {
+    const v1 = document.getElementById('p_' + j.id + '_1')?.value;
+    const v2 = document.getElementById('p_' + j.id + '_2')?.value;
+    if (v1 !== '' && v2 !== '' && v1 !== undefined && v2 !== undefined) {
+      entries.push({ jogoId: j.id, time1: j.time1, time2: j.time2, placar1: v1, placar2: v2 });
+    }
+  });
+
+  if (!entries.length) { showToast('Preencha pelo menos um palpite!', true); return; }
+
+  const btn = document.querySelector('.btn-save');
+  btn.disabled = true; btn.textContent = 'Salvando...';
+
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'savePalpites', nome: name, palpites: entries })
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast('✅ Palpites salvos com sucesso!');
+    } else {
+      showToast('Erro: ' + (data.error || 'Tente novamente'), true);
+    }
+  } catch (e) {
+    showToast('Erro de conexão. Verifique o script.', true);
+  }
+
+  btn.disabled = false; btn.textContent = 'Salvar palpites';
+}
+
+// ============================================================
+// RANKING
+// ============================================================
+async function loadRanking() {
+  const c = document.getElementById('rankingContainer');
+  c.innerHTML = '<div class="loading"><div class="spinner"></div>Calculando ranking...</div>';
+  try {
+    const res = await fetch(SCRIPT_URL + '?action=getRanking');
+    const data = await res.json();
+    renderRanking(data.ranking || []);
+  } catch (e) {
+    c.innerHTML = '<div class="empty">Erro ao carregar ranking. Verifique a conexão.</div>';
+  }
+}
+
+function renderRanking(ranking) {
+  const c = document.getElementById('rankingContainer');
+  if (!ranking.length) { c.innerHTML = '<div class="empty">Nenhum palpite salvo ainda.</div>'; return; }
+
+  const medals = ['gold', 'silver', 'bronze'];
+  let html = '<div class="ranking-table">';
+  ranking.forEach((p, i) => {
+    const posClass = medals[i] || '';
+    html += `
+    <div class="ranking-row">
+      <div class="rank-pos ${posClass}">${i + 1}</div>
+      <div style="flex:1">
+        <div class="rank-name">${p.nome}</div>
+        <div class="rank-detail">${p.acertos || 0} acertos · ${p.jogos || 0} palpites</div>
+      </div>
+      <div style="text-align:right">
+        <div class="rank-pts">${p.pontos}</div>
+        <div class="rank-pts-label">pts</div>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  c.innerHTML = html;
+}
+
+// ============================================================
+// ADMIN
+// ============================================================
+async function adminLogin() {
+  const pass = document.getElementById('adminPass').value;
+  try {
+    const res = await fetch(SCRIPT_URL + '?action=adminLogin&pass=' + encodeURIComponent(pass));
+    const data = await res.json();
+    if (data.ok) {
+      adminLoggedIn = true;
+      document.getElementById('adminLock').style.display = 'none';
+      document.getElementById('adminPanel').classList.add('active');
+      loadAdminJogos();
+    } else {
+      showToast('Senha incorreta!', true);
+    }
+  } catch (e) {
+    showToast('Erro de conexão.', true);
+  }
+}
+
+function adminLogout() {
+  adminLoggedIn = false;
+  document.getElementById('adminLock').style.display = 'block';
+  document.getElementById('adminPanel').classList.remove('active');
+  document.getElementById('adminPass').value = '';
+}
+
+function loadAdminJogos() {
+  const c = document.getElementById('adminJogosContainer');
+  let html = '<div class="results-grid">';
+  JOGOS.forEach(j => {
+    const r = resultadosAdmin[j.id] || { t1: '', t2: '' };
+    html += `
+    <div class="result-card">
+      <div class="result-teams">
+        <div>${j.time1} vs ${j.time2}</div>
+        <div class="result-meta">${j.data} · ${j.grupo || j.fase}</div>
+      </div>
+      <div class="game-inputs">
+        <input type="number" class="score-input" id="r_${j.id}_1" min="0" max="99" value="${r.t1}" placeholder="–" oninput="saveResultadoLocal('${j.id}')">
+        <span class="score-sep">:</span>
+        <input type="number" class="score-input" id="r_${j.id}_2" min="0" max="99" value="${r.t2}" placeholder="–" oninput="saveResultadoLocal('${j.id}')">
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  c.innerHTML = html;
+}
+
+function saveResultadoLocal(jogoId) {
+  resultadosAdmin[jogoId] = {
+    t1: document.getElementById('r_' + jogoId + '_1').value,
+    t2: document.getElementById('r_' + jogoId + '_2').value
+  };
+}
+
+async function saveResultados() {
+  const entries = [];
+  JOGOS.forEach(j => {
+    const v1 = document.getElementById('r_' + j.id + '_1')?.value;
+    const v2 = document.getElementById('r_' + j.id + '_2')?.value;
+    if (v1 !== '' && v2 !== '' && v1 !== undefined && v2 !== undefined) {
+      entries.push({ jogoId: j.id, time1: j.time1, time2: j.time2, placar1: v1, placar2: v2 });
+    }
+  });
+
+  if (!entries.length) { showToast('Preencha pelo menos um resultado!', true); return; }
+
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'saveResultados', resultados: entries })
+    });
+    const data = await res.json();
+    if (data.success) showToast('✅ Resultados salvos!');
+    else showToast('Erro: ' + (data.error || 'Tente novamente'), true);
+  } catch (e) {
+    showToast('Erro de conexão.', true);
+  }
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isError ? ' error' : '');
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderJogos();
+</script>
+</body>
+</html>
