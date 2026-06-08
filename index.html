@@ -1,690 +1,3 @@
-
-Claude terminou a resposta
-1780943923638_image.png
-Você consegue acessar esse link do claude e me dizer como isso foi feito? 
-
-https://victor-design-lemon.github.io/bolaocopa-lemon/
-15:40
-
-Pesquisou na web
-Pesquisou na web
-Não encontrei o repositório público no GitHub pela busca. Mas consegui acessar a página e analisar bem o conteúdo. Posso te dizer com bastante clareza como esse bolão foi construído:
-
-Como o Bolão Copa 2026 foi feito
-Stack técnica (pelo que é visível na página)
-É um site estático hospedado no GitHub Pages — sem backend próprio. Tudo roda no navegador do usuário.
-
-Componentes principais
-1. Frontend — HTML + CSS + JavaScript puro (ou com pouco framework)
-
-A URL github.io confirma que é um repositório estático
-O visual com cards, abas (Palpitar / Ranking / Admin) e cores da Lemon sugere CSS customizado, provavelmente com Tailwind ou CSS manual
-Design responsivo com tema verde da marca
-2. Persistência de dados — provavelmente Firebase ou localStorage
-
-Sem backend próprio, os palpites precisam ser salvos em algum lugar
-O mais provável é Firebase Realtime Database ou Firestore (gratuito, fácil de integrar em sites estáticos), que permite salvar e ler palpites em tempo real
-O ranking em "tempo real" mencionado no modal de confirmação reforça isso
-3. Área Admin com autenticação dupla
-
-Senha + Google Authenticator (TOTP) — isso é implementado via biblioteca JavaScript como otpauth ou speakeasy
-É uma solução 100% client-side, o que é incomum mas funcional para uso interno
-4. Sistema de pontuação
-
-Lógica em JS puro comparando o palpite salvo com o resultado real lançado pelo admin
-Regras: 15pts placar exato, 10pts vencedor + gols, 5pts só resultado, 2pts 1 placar certo, 0pts errou tudo
-Em resumo
-Provavelmente foi feito com HTML/CSS/JS + Firebase para persistência, hospedado gratuitamente no GitHub Pages. É uma solução elegante e de baixo custo para um bolão corporativo interno.
-
-Quer que eu construa algo parecido pra vocês? Posso replicar ou adaptar essa estrutura.
-
-Não tem como eu simplesmente gerar uma cópia? certo? E como ele alimenta o ranking real? manualmente?
-
-15:43
-Exato, não dá pra simplesmente copiar pelo GitHub Pages ser um repositório privado (ou pelo menos não público nos resultados de busca). Você não tem acesso ao código-fonte diretamente.
-
-Como ele alimenta o ranking
-Pelo que vi na página, tem uma área Admin protegida com senha + Google Authenticator. O fluxo é:
-
-Admin entra na área restrita
-Preenche os resultados reais dos jogos já disputados
-O sistema recalcula automaticamente os pontos de cada participante com base nos palpites já salvos
-O ranking atualiza
-Então é semi-manual — alguém precisa entrar e lançar o placar real após cada jogo. A automação fica por conta do cálculo dos pontos, que é feito pelo JavaScript comparando palpite vs resultado real.
-
-O que você quer fazer?
-Posso te construir um bolão do zero igual (ou melhor) a esse. Mas preciso entender o contexto:
-
-P: Onde os dados seriam salvos?
-R: Google Sheets (mais simples)
-
-P: Qual o tamanho do bolão?
-R: Pequeno (até 20 pessoas)
-
-15:43
-Ótima escolha! Google Sheets é perfeito para esse tamanho — todo mundo na Lemon já sabe usar, os dados ficam visíveis e auditáveis, e não precisa configurar nada complexo.
-
-Antes de construir, mais uma coisa:
-
-P: O que você quer que eu faça agora?
-R: Me explicar a arquitetura antes de construir
-
-15:43
-Boa escolha — entender antes de construir evita retrabalho. Aqui vai a arquitetura completa:
-
-Arquitetura do Bolão com Google Sheets
-Visão geral
-[Site estático no GitHub Pages]  ←→  [Google Apps Script]  ←→  [Google Sheets]
-        (HTML/CSS/JS)                     (API/backend)              (banco de dados)
-O Google Apps Script age como um backend gratuito — ele expõe uma URL que o site chama para ler e gravar dados na planilha.
-
-As 3 camadas
-1. Frontend (GitHub Pages)
-
-HTML/CSS/JS puro, hospedado gratuitamente
-Telas: Palpitar, Ranking, Admin
-Chama o Apps Script via fetch() para salvar/ler dados
-2. Google Apps Script (backend gratuito)
-
-Um arquivo .gs publicado como "Web App" — vira uma URL pública
-Recebe os palpites e grava na planilha
-Lê os resultados e calcula os pontos
-Protege a área admin com senha simples
-3. Google Sheets (banco de dados) Você teria 3 abas na planilha:
-
-Aba	Conteúdo
-Palpites	Nome, jogo, placar apostado, timestamp
-Resultados	Jogo, placar real (admin preenche)
-Jogos	Lista dos jogos da Copa (fase de grupos + mata-mata)
-Fluxo de uso
-Participante acessa o site
-  → digita nome + palpites
-  → clica "Salvar"
-  → Apps Script grava na aba "Palpites"
-
-Admin acessa área restrita
-  → lança o placar real de um jogo
-  → Apps Script grava na aba "Resultados"
-
-Qualquer pessoa vê o Ranking
-  → Apps Script lê Palpites + Resultados
-  → calcula pontos em tempo real
-  → retorna ranking ordenado
-Pontos de atenção
-Limitações do Apps Script que precisamos contornar:
-
-A URL do script fica exposta no JS — qualquer um pode ver. Para o admin, a "senha" precisa ser enviada junto na requisição e validada no script.
-Não tem autenticação TOTP (Google Authenticator) como no bolão original — mas uma senha simples no script já resolve para uso interno.
-Limite de 20k requisições/dia no plano gratuito — para 20 pessoas, sobra muito.
-O que você precisaria fazer manualmente:
-
-Criar a planilha no Google Sheets (eu gero o template)
-Colar o código do Apps Script e publicar como Web App (5 minutos, passo a passo)
-Colocar a URL gerada no arquivo JS do site
-Hospedar o HTML no GitHub Pages (ou qualquer hospedagem estática)
-Quer que eu construa agora? Posso entregar:
-
-O HTML/JS completo do site
-O código do Apps Script pronto para colar
-Um guia passo a passo de como conectar tudo
-Sim, quero, e depois você me ensina sobre a planilha, o modelo dela, pois não quero estourar os tokens, além disso, já fiz uma nova para você poder colocar o link
-
-https://docs.google.com/spreadsheets/d/1dI34ZDEsKg3yDo-CJNhMDWd3qp26co7uyd-TgZYqz6g/edit?gid=0#gid=0
-15:47
-Perfeito! Vou construir tudo agora. Deixa eu primeiro ler o skill de frontend para garantir qualidade máxima.
-
-
-Reading frontend design skill
-Reading frontend design skill
-Agora vou construir o site completo. Isso vai ser um arquivo HTML robusto — vou criar direto no output.
-
-
-Executou um comando, criou um arquivo
-Executou um comando, criou um arquivo
-Agora o Apps Script — o "backend" que conecta o site à sua planilha:
-
-
-Criou um arquivo, leu um arquivo
-Criou um arquivo, leu um arquivo
-Pronto! Dois arquivos entregues. Agora o passo a passo para conectar tudo:
-
-Como configurar em 5 passos
-1. Criar o Apps Script vinculado à sua planilha
-
-Abra sua planilha → menu Extensões → Apps Script
-Apague o código padrão e cole o conteúdo de apps-script.gs
-O ID da planilha já está preenchido com o seu link
-2. Publicar o Apps Script como Web App
-
-Clique em Implantar → Nova implantação
-Tipo: App da Web
-Executar como: Eu (seu e-mail)
-Quem tem acesso: Qualquer pessoa
-Clique em Implantar e copie a URL gerada (algo como https://script.google.com/macros/s/ABC123.../exec)
-3. Colar a URL no site
-
-Abra o index.html e procure a linha:
-  const SCRIPT_URL = 'COLE_AQUI_A_URL_DO_APPS_SCRIPT';
-Substitua pelo link copiado
-4. Hospedar no GitHub Pages
-
-Crie um repositório no GitHub (pode ser privado)
-Suba o index.html
-Vá em Settings → Pages → Branch: main e salve
-Em ~1 minuto o site estará no ar em seu-usuario.github.io/nome-do-repo
-5. Mudar a senha do admin
-
-No apps-script.gs, linha 9: const ADMIN_PASSWORD = 'lemon2026';
-Troque por uma senha forte e reimplante
-Agora me fala: quer que eu explique o modelo da planilha (as 3 abas que serão criadas automaticamente) ou prefere primeiro testar a conexão?
-
-
-Index
-Código · HTML 
-
-Apps script
-GS 
-1780944754144_image.png
-Não achei o webapp....
-
-15:52
-Você precisa clicar no ícone de engrenagem (⚙️) no lado esquerdo — "Selecione o tipo". Veja o passo a passo:
-
-A resposta do Claude foi interrompida.
-1780944865165_image.png
-é seguro?
-
-15:54
-Sim, é completamente seguro! Esse é o fluxo normal do Google.
-
-O que está acontecendo é que o Apps Script precisa de permissão para ler e escrever na sua própria planilha do Google Sheets. É o Google pedindo autorização para si mesmo, basicamente.
-
-Clique em Autorizar acesso, escolha sua conta Google, e se aparecer um aviso de "app não verificado", clique em Avançado → Acessar o projeto (não seguro) — isso aparece porque é um script seu, não publicado na loja do Google, o que é normal para uso interno.
-
-Depois da autorização, ele vai gerar a URL do Web App. Pode prosseguir!
-
-Como que eu edito o index? Aonde que ue abro isso?
-
-15:56
-Você tem algumas opções, da mais simples para a mais completa:
-
-Opção 1 — Direto no GitHub (mais fácil) Depois de subir o arquivo pro repositório, clique no index.html → botão de lápis ✏️ no canto superior direito → edita no próprio navegador → clica em Commit changes.
-
-Opção 2 — VS Code no navegador (sem instalar nada) Com o repositório aberto no GitHub, aperte a tecla ponto (.) no teclado. Abre um VS Code direto no navegador, com syntax highlight e tudo.
-
-Opção 3 — VS Code no computador (melhor experiência)
-
-Baixe o VS Code
-Abra o arquivo index.html nele
-Instale a extensão Live Server para ver o site em tempo real enquanto edita
-Opção 4 — Bloco de notas (emergência) Clique com botão direito no arquivo → Abrir com → Bloco de notas. Funciona, mas sem nenhuma ajuda visual.
-
-Para o seu caso, recomendo a Opção 2 — apertar . no GitHub é o caminho mais rápido sem precisar instalar nada. Qual você prefere usar?
-
-1780945170174_image.png
-Primeira vez que entro no github, me de um resumo e um guia
-
-15:59
-Perfeito, conta zerada! Vou te guiar do zero para ter o bolão no ar.
-
-O que é o GitHub (resumo rápido)
-É um serviço para guardar arquivos de código na nuvem. Para o nosso caso, você vai usar dois recursos apenas:
-
-Repositório — uma pasta onde ficam os arquivos do seu projeto
-GitHub Pages — transforma essa pasta num site gratuito acessível por URL pública
-Guia passo a passo
-Passo 1 — Criar o repositório
-
-Clique no botão verde "Create repository" que aparece na sua tela
-Preencha assim:
-Repository name: bolaocopa-lemon
-Visibility: Public (obrigatório para o GitHub Pages gratuito)
-Marque ✅ "Add a README file"
-Clique em "Create repository"
-Passo 2 — Subir o index.html
-
-Dentro do repositório criado, clique em "Add file" → "Upload files"
-Arraste o index.html que você baixou aqui
-Clique em "Commit changes"
-Passo 3 — Ativar o GitHub Pages
-
-Clique em Settings (na barra do repositório)
-No menu lateral esquerdo, clique em Pages
-Em "Branch", selecione main → clique em Save
-Aguarde ~1 minuto e o link do site aparece ali mesmo
-Passo 4 — Editar o arquivo depois Para editar o index.html futuramente, abra o repositório e aperte a tecla ponto (.) no teclado — abre um editor completo no navegador.
-
-Começa pelo Passo 1 e me manda print de cada etapa que eu te guio! 🚀
-
-Show, só edita as cores para não ficar tão copia, esse bolão será entre os amigos e não na lemon
-
-16:01
-Claro! Me diz o estilo que você quer:
-
-P: Qual esquema de cores você prefere?
-R: Azul escuro + dourado (estilo premium)
-
-P: Qual nome aparece no topo do site?
-R: Bolão Copa 2026
-
-16:02
-Boa escolha! Gerando agora com visual premium azul + dourado.
-
-
-Executou 2 comandos
-Executou 2 comandos
-Tenho tudo que preciso. Vou reescrever o arquivo com o novo visual.
-
-
-Editou 16 arquivos, executou um comando
-Editou 16 arquivos, executou um comando
-Agora copio para o output:
-
-
-Executou um comando, leu um arquivo
-Executou um comando, leu um arquivo
-Pronto! O que mudou no visual:
-
-Header → azul marinho escuro com gradiente + borda dourada sutil na base
-Logo → ícone de troféu 🏆 com fundo dourado
-Botões → gradiente dourado com texto azul escuro
-Destaques → pontuações, labels e separadores todos em dourado
-Fase de grupos → barra lateral dourada no cabeçalho de cada fase
-Fundo geral → cinza-azulado neutro, bem diferente do verde
-É só substituir o index.html antigo por esse no GitHub. Quer que eu te explique como fazer isso?
-
-
-Index
-Código · HTML 
-1780945887728_image.png
-Aonde deve aparecer?
-
-16:12
-Perfeito, está configurado certinho! O Pages já está ativo na branch main.
-
-Role a página para cima — o link aparece logo no topo da seção Pages, assim:
-
-Your site is live at:
-https://mateusantunez.github.io/bolaocopa-lemon/
-Às vezes demora 1 a 2 minutos para aparecer na primeira vez. Se ainda não apareceu, aguarda um pouco e dá F5 na página de Settings.
-
-Quando aparecer o link, me manda que a gente testa se está funcionando! 🚀
-
-1780946170902_image.png
-1780946174285_image.png
-16:16
-Boa notícia: o site está no ar! Mas está mostrando o README.md em vez do index.html — isso acontece porque o arquivo foi enviado como index (1).html (com espaço e número), e o GitHub Pages só reconhece exatamente index.html.
-
-Correção rápida:
-
-No VS Code do navegador (onde você está), clique no arquivo index (1).html no explorador da esquerda
-Clique com botão direito nele → Rename
-Renomeie para exatamente: index.html
-Salve com Ctrl+S
-No canto inferior esquerdo vai aparecer um ícone de "Source Control" (ramificação) — clique nele
-Escreva uma mensagem como renomear arquivo e clique em Commit & Push
-Aguarda 1 minuto e acessa mateusantunez.github.io/bolaocopa-2026/ de novo — aí vai carregar o bolão!
-
-Eu posso renomear direto no git?
-
-16:18
-Sim! É mais fácil até. Veja:
-
-Feche o VS Code do navegador (pode fechar a aba)
-Vá para o repositório no GitHub normal
-Clique no arquivo index (1).html
-Clique no ícone de lápis ✏️ (Edit file) no canto superior direito
-Lá em cima, onde aparece o nome do arquivo, clique no nome e renomeie para index.html
-Role até o final → clique em Commit changes
-Pronto, 1 minuto e o site atualiza! 🚀
-
-e o readme? eu apago?
-
-16:21
-Pode deixar! O README não atrapalha nada — o GitHub Pages sempre prioriza o index.html. Ele só apareceu antes porque era o único arquivo válido.
-
-Mas se quiser apagar mesmo é simples: clique no README.md → ícone de lixeira 🗑️ → Commit changes.
-
-E como eu acesso o site direto do git? onde que aparece?
-
-16:22
-No repositório, clique em Settings → Pages — o link aparece lá em cima assim:
-
-Your site is live at: https://mateusantunez.github.io/bolaocopa-2026/
-
-Mas tem um atalho mais rápido: na página principal do repositório, no lado direito tem uma seção chamada "Deployments" ou "github-pages" — clica nela e já abre o link direto.
-
-1780946604139_image.png
-
-<!DOCTYPE html> <html lang="pt-BR"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Bolão Copa 2026</title> <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesh
-
-pasted
-
-O site parece meio estranho, além disso, aparece erro de conexão, o que eu errei? Vou lhe enviar o código
-
-16:24
-Vejo dois problemas:
-
-1. CSS quebrado — tem um erro no código que quebrou o estilo todo. Olha essa linha no CSS:
-
-css
-.pill-pts-old-removed {
-
-/* IDENTIFICAÇÃO */
-A chave { nunca foi fechada, então todo o CSS de identificação pra baixo ficou dentro de uma classe inválida. Por isso o layout está sem estilo.
-
-2. Erro de conexão — a URL do Apps Script ainda está como 'COLE_AQUI_A_URL_DO_APPS_SCRIPT'. Você já gerou a URL do script?
-
-Vou te entregar um arquivo corrigido agora:
-
-
-Executou 2 comandos, editou um arquivo, leu um arquivo
-Executou 2 comandos, editou um arquivo, leu um arquivo
-Arquivo corrigido! Substitua no GitHub.
-
-Sobre o erro de conexão — me fala: você já conseguiu a URL do Apps Script depois de publicar como Web App? Se sim, me manda ela que eu coloco direto no arquivo pra você.
-
-
-Index
-Código · HTML 
-Agora vamos ao modelo da planilha, como deve ser?
-
-16:27
-O modelo é bem simples! O Apps Script cria as abas automaticamente na primeira vez que alguém usa o site — você não precisa criar nada na mão.
-
-Mas é bom entender o que vai aparecer:
-
-As 3 abas criadas automaticamente
-Aba Palpites — gerada quando alguém salva um palpite
-
-Timestamp	Nome	JogoID	Time1	Time2	Placar1	Placar2
-08/06/2026 14:32	João Silva	G001	Qatar	Equador	2	1
-08/06/2026 14:32	João Silva	G002	Senegal	Holanda	0	0
-08/06/2026 15:10	Maria	G001	Qatar	Equador	1	1
-Aba Resultados — preenchida pelo admin após cada jogo
-
-JogoID	Time1	Time2	Placar1	Placar2	Atualizado
-G001	Qatar	Equador	0	2	08/06/2026 20:00
-Aba Jogos — reservada para uso futuro, não é usada ainda
-
-Como funciona na prática
-Alguém acessa o site e salva palpites → linha nova em Palpites
-Jogo acontece → admin entra no painel e lança o placar real → linha em Resultados
-Qualquer pessoa clica em Ranking → o script cruza as duas abas e calcula os pontos automaticamente
-Única coisa que você precisa fazer manualmente
-Nada na planilha! Só lançar os resultados pelo painel Admin do site após cada jogo.
-
-Pronto para o próximo passo? Você ainda precisa colocar a URL do Apps Script no arquivo. Já gerou ela?
-
-Show, a estrutura de resultados está correta? certo? ou seja, a pontuação bate com a descrição? Fiz os testes aqui do app e está rodando muito massa
-
-16:34
-Boa notícia que está rodando! Vamos confirmar a lógica — olha a função calcularPontos no Apps Script:
-
-p1=2, p2=1 vs r1=2, r2=1 → 2==2 e 1==1 → 15pts ✅ Placar exato
-p1=2, p2=0 vs r1=2, r2=1 → vencedor certo + p1==r1 (2==2) → 10pts ✅
-p1=1, p2=0 vs r1=3, r2=0 → vencedor certo, mas nenhum placar bate → 5pts ✅
-p1=2, p2=0 vs r1=1, r2=2 → errou resultado + p2==r2? não → 0pts ✅
-p1=2, p2=1 vs r1=0, r2=1 → errou resultado + p2==r2 (1==1) → 2pts ✅
-Bate exatamente com a descrição:
-
-Pts	Condição
-15	Placar exato
-10	Vencedor certo + gols de 1 time certo
-5	Só o resultado certo (vitória/empate/derrota)
-2	1 placar certo mas errou o resultado
-0	Errou tudo
-Está correto! 🎯
-
-Uma coisa que vale checar: o caso de empate. Se você apostou 1x1 e o resultado foi 2x2, a lógica dá 5pts — acertou que seria empate mas errou os placares. Isso é o comportamento esperado pra vocês?
-
-Sim, faz sentido, agora a ultima duvida é para você me explicar o que foi cada passo, o que foi o app web no apps script, pq usar o git, quero ter mais conexto do que fiz
-
-16:35
-Boa pergunta! Vou explicar cada peça do que você montou:
-
-O que você construiu
-Um sistema com 3 camadas independentes que se comunicam:
-
-Navegador do usuário  →  Apps Script  →  Google Sheets
-   (index.html)           (backend)      (banco de dados)
-Cada peça
-Google Sheets — o banco de dados É onde os dados vivem. Toda vez que alguém salva um palpite ou o admin lança um resultado, uma linha nova entra na planilha. Você escolheu o Sheets porque é simples, gratuito, e qualquer pessoa da galera pode abrir e ver os dados diretamente se precisar.
-
-Google Apps Script — o backend É um serviço do Google que roda código JavaScript nos servidores deles, de graça. Quando você publicou como Web App, ele gerou uma URL pública — isso transformou seu script numa API, ou seja, um endereço que aceita perguntas e devolve respostas.
-
-O site chama essa URL para duas coisas: gravar dados (palpites e resultados) e ler dados (ranking). Sem ele, o index.html não teria como falar com a planilha, porque o navegador não tem permissão direta para escrever no Google Sheets de outra pessoa.
-
-GitHub Pages — a hospedagem O index.html é só um arquivo de texto. Para virar um site acessível por qualquer pessoa com o link, ele precisa estar num servidor. O GitHub Pages faz isso de graça — você sobe o arquivo no repositório e ele serve como site público automaticamente. Não precisa pagar hospedagem, não precisa configurar servidor.
-
-O fluxo completo quando alguém usa
-1. Amigo abre mateusantunez.github.io/bolaocopa-2026
-        ↓
-   GitHub entrega o index.html pro navegador dele
-
-2. Ele preenche os palpites e clica Salvar
-        ↓
-   O JavaScript do site faz uma requisição para a URL do Apps Script
-
-3. O Apps Script recebe os dados
-        ↓
-   Abre a planilha e grava as linhas na aba Palpites
-
-4. Ele clica em Ranking
-        ↓
-   O site pede o ranking pro Apps Script
-   O script lê Palpites + Resultados, calcula os pontos e devolve
-   O site exibe a tabela
-Por que não dá pra fazer mais simples?
-Dá pra perguntar: por que não salvar direto no Sheets sem o Apps Script? Porque o Google não deixa — qualquer API do Google exige autenticação, e você não pode expor sua senha no código do site (qualquer um conseguiria ver). O Apps Script resolve isso rodando com sua conta nos servidores do Google, sem expor credencial nenhuma.
-
-No fundo você montou uma stack completa de aplicação web sem pagar nada e sem precisar de um servidor próprio. É exatamente o que empresas pequenas e projetos internos usam no mundo real.
-
-E qual a limitação? Pq eu não poderia ter um site com mil usuarios no git por exemplo?
-
-16:46
-Ótima pergunta! As limitações vêm de cada camada:
-
-GitHub Pages
-Na prática, sem limitação real para o seu caso. Ele aguenta milhares de acessos simultâneos sem problema — afinal é só entregar um arquivo HTML estático. Essa camada não é o gargalo.
-
-Google Apps Script — aqui está o gargalo real
-Limite	Valor
-Requisições simultâneas	30 ao mesmo tempo
-Tempo máximo por execução	6 minutos
-Chamadas por dia	20.000/dia
-Planilha aberta ao mesmo tempo	1 por vez (fila)
-O problema com 1.000 usuários não seria o volume diário — seriam os acessos simultâneos. Se 50 pessoas clicarem em "Salvar" ao mesmo tempo, algumas vão receber erro ou esperar na fila. Para um bolão entre amigos isso nunca acontece, mas num site público seria crítico.
-
-Google Sheets
-Aguenta bem até uns 200-300 usuários ativos gravando dados. Acima disso começa a ficar lento porque a planilha trava enquanto uma operação de escrita está acontecendo.
-
-Para escalar de verdade, o que mudaria?
-O que trocar	Por quê
-Apps Script → Firebase ou Supabase	Aguentam milhares de requisições simultâneas
-Google Sheets → banco de dados real (PostgreSQL, Firestore)	Escritas paralelas sem fila
-GitHub Pages → continua igual	Não precisa mudar
-Resumo prático
-Para até ~50 usuários simultâneos o que você montou funciona perfeitamente e de graça. Acima disso, o Apps Script vira o problema. Para um bolão entre amigos você está bem longe desse limite — pode usar sem preocupação.
-
-E sobre a fase mata a mata, o bolão preve ela?
-
-16:48
-Não prevê ainda! Os jogos do mata-mata têm um problema que a fase de grupos não tem — você não sabe os times com antecedência. Só depois que os grupos terminam é que você sabe quem joga contra quem.
-
-No código atual, os jogos estão fixos no index.html:
-
-javascript
-const JOGOS = [
-  { id: 'G001', fase: 'Fase de Grupos', ... },
-  // mata-mata não tem porque os times são desconhecidos
-]
-Como resolver
-Tem duas abordagens:
-
-Opção 1 — Simples (manual) Quando a fase de grupos terminar, você edita o index.html no GitHub adicionando os jogos do mata-mata com os times já definidos, e faz um novo commit. Os amigos acessam o site atualizado e palpitam normalmente.
-
-Opção 2 — Dinâmica (mais elaborada) O admin cadastra os jogos do mata-mata pelo painel, eles ficam salvos na planilha, e o site carrega dinamicamente. Isso exigiria mudar o Apps Script e o painel admin.
-
-Para um bolão entre amigos a Opção 1 é mais que suficiente — você só precisaria editar o arquivo umas 4 vezes (oitavas, quartas, semis e final) ao longo do torneio.
-
-Quer que eu já deixe a estrutura do mata-mata pronta no código para você só preencher os times depois? Seria só adicionar as linhas com os IDs reservados como R001, Q001, S001, F001 com os times em branco.
-
-Quero sim, mas pense que terá 16 avos....
-
-16:49
-Boa observação! A Copa 2026 tem 48 times — formato novo — então o mata-mata começa com 32 times, não 16. A estrutura completa é:
-
-Fase	Jogos
-Oitavas de final	16 jogos
-Quartas de final	8 jogos
-Semifinal	4 jogos
-Terceiro lugar	1 jogo
-Final	1 jogo
-Total mata-mata	30 jogos
-Vou atualizar o index.html com todos os jogos reservados, com os times em branco para você preencher depois:
-
-
-Copy for editing
-Copy for editing
-A resposta do Claude foi interrompida.
-Não precisa editar tudo, só me dizer aonde colocar e o que colocar, que eu edito na mão mesmo, a não ser que vocÊ pretenda mudar algo na visualização, pretende?
-
-16:50
-Boa ideia! Não precisa mudar nada na visualização — o código já agrupa por fase automaticamente, então vai funcionar perfeito.
-
-Só adiciona no index.html, depois da última linha do Grupo H (G016), dentro do array JOGOS:
-
-javascript
-// OITAVAS DE FINAL (16 jogos)
-{ id: 'O001', fase: 'Oitavas de Final', grupo: 'Oitavas de Final', time1: 'A definir', time2: 'A definir', data: '29/06' },
-{ id: 'O002', fase: 'Oitavas de Final', grupo: 'Oitavas de Final', time1: 'A definir', time2: 'A definir', data: '29/06' },
-// ... O003 até O016
-
-// QUARTAS DE FINAL (8 jogos)
-{ id: 'Q001', fase: 'Quartas de Final', grupo: 'Quartas de Final', time1: 'A definir', time2: 'A definir', data: '04/07' },
-// ... Q002 até Q008
-
-// SEMIFINAL (4 jogos)
-{ id: 'S001', fase: 'Semifinal', grupo: 'Semifinal', time1: 'A definir', time2: 'A definir', data: '09/07' },
-// ... S002 até S004 (sendo S003 o terceiro lugar)
-
-// FINAL
-{ id: 'F001', fase: 'Final', grupo: 'Final', time1: 'A definir', time2: 'A definir', data: '19/07' },
-Quando a fase de grupos terminar, você troca os 'A definir' pelos times reais e atualiza o data com a data correta. O site já vai separar cada fase automaticamente com o cabeçalho azul marinho.
-
-Só isso!
-
-A parte de jogos também está defasada, certo? Pois só tem a primeira rodada? Como que podemos colcoar a segunda  e terceira? Tem como eu habilitar isso em determinada data?
-
-16:54
-Exato, está só com a primeira rodada! Sobre habilitar por data — dá sim, e é simples de implementar.
-
-A ideia é adicionar um campo liberado em cada jogo:
-
-javascript
-{ id: 'G001', ..., liberado: '2026-06-11' },
-E no código que renderiza os jogos, filtra assim:
-
-javascript
-const hoje = new Date().toISOString().split('T')[0];
-const jogosFiltrados = JOGOS.filter(j => !j.liberado || j.liberado <= hoje);
-Isso faz o jogo aparecer automaticamente na data certa, sem você precisar mexer em nada.
-
-Antes de eu gerar o arquivo completo com todos os jogos das 3 rodadas + mata-mata + lógica de liberação por data, preciso confirmar os jogos — os da Copa 2026 já foram definidos?
-
-
-Pesquisou na web
-Pesquisou na web
-Ótimo — tenho a tabela completa oficial! Vou te entregar o bloco inteiro para substituir o const JOGOS no seu index.html, com todos os jogos das 3 rodadas + lógica de liberação por data:
-
-
-Complete JOGOS array with all group stage matches and date-based unlock logic
-Complete JOGOS array with all group stage matches and date-based unlock logic
-
-<!DOCTYPE html> <html lang="pt-BR"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Bolão Copa 2026</title> <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesh
-
-pasted
-
-Tchequia, turquia e congo classificaram, quero o ajuste para publicar no git
-
-20:33
-Vi o código que você já tem — está muito bom e já tem a URL do script configurada! Vou só corrigir os times que se classificaram e que estavam como "A confirmar".
-
-
-Executou 2 comandos, leu um arquivo
-Executou 2 comandos, leu um arquivo
-
-Create final corrected HTML file
-
-Script
-
-Copy to output
-
-Script
-
-Presented file
-Concluído
-Pronto! As correções feitas:
-
-Grupo A → Rep. Tcheca no lugar de "A confirmar" (classificada pela repescagem europeia)
-Grupo D → Turquia confirmada
-Grupo K → Congo DR confirmada
-O mata-mata continua com "A definir" para você preencher conforme os jogos forem definidos. É só substituir o index.html no GitHub!
-
-
-Index
-Código · HTML 
-O quão dificil é incluir a bandeira dos times ao lado? nos mais dificeis poderia colcoar um x, e além disso, separar em "rodada 1" e "rodada 2", um topbar?
-
-20:38
-Nenhuma das duas é difícil! Deixa eu entender melhor antes de construir:
-
-Sobre as bandeiras — existem duas abordagens:
-
-Emoji de bandeira (🇧🇷 🇦🇷 🇩🇪) — funciona em todos os dispositivos, zero configuração, mas alguns times menores como Curaçao e Congo DR não têm emoji oficial e ficaria com ❌ ou caractere estranho
-Imagem do serviço de bandeiras (flagcdn.com) — todas as bandeiras reais, mas precisa do código ISO de cada país
-Qual você prefere?
-
-Sobre separar em rodadas — confirmo que entendi: você quer um segundo nível de navegação dentro da aba "Palpitar", tipo:
-
-P: Qual abordagem para as bandeiras?
-R: Emoji de bandeira (simples, alguns times sem bandeira)
-
-P: Como separar as rodadas?
-R: Abas: Rodada 1 · Rodada 2 · Rodada 3 · Mata-mata
-
-20:38
-Perfeito! Vou construir agora com emojis de bandeira e abas de rodadas.
-
-
-Executou 2 comandos, leu um arquivo
-Executou 2 comandos, leu um arquivo
-Pronto! O que mudou nessa versão:
-
-Bandeiras — todos os 32 times têm emoji de bandeira mapeado, incluindo Escócia 🏴󠁧󠁢󠁳󠁣󠁴󠁿 e Inglaterra 🏴󠁧󠁢󠁥󠁮󠁧󠁿 com as bandeiras corretas. Os jogos do mata-mata mostram ❓ até você preencher os times.
-
-Topbar de rodadas — aparece só na aba Palpitar, fica fixo no topo enquanto você rola a página, e some nas abas Ranking e Admin.
-
-Jogos separados por array — JOGOS_R1, JOGOS_R2, JOGOS_R3, JOGOS_MATA — o que facilita editar cada rodada de forma independente no futuro.
-
-É só substituir o index.html no GitHub!
-
-
-Index
-Código · HTML 
-
-Você usou 90% do seu limite de sessão
-Fazer Upgrade
-
-
-
-
-Claude é uma IA e pode cometer erros. Por favor, verifique as respostas.
-
-
-raw
-Index · HTML
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -710,10 +23,10 @@ Index · HTML
     --radius: 12px;
     --shadow: 0 2px 20px rgba(13,27,46,0.12);
   }
- 
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--green-pale); color: var(--text); min-height: 100vh; }
- 
+
   /* HEADER */
   .header {
     background: linear-gradient(135deg, #0d1b2e 0%, #1a3a5c 100%);
@@ -737,7 +50,7 @@ Index · HTML
   }
   .nav-btn.active { color: var(--white); border-bottom-color: var(--yellow); }
   .nav-btn:hover { color: var(--white); }
- 
+
   /* RODADAS TOPBAR */
   .rodadas-bar {
     background: var(--white);
@@ -758,13 +71,13 @@ Index · HTML
   }
   .rodada-btn.active { color: var(--green-main); border-bottom-color: var(--green-main); }
   .rodada-btn:hover { color: var(--text); }
- 
+
   .main { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
   .tab { display: none; }
   .tab.active { display: block; }
   .rodada-panel { display: none; }
   .rodada-panel.active { display: block; }
- 
+
   /* SCORE CARD */
   .score-card {
     background: var(--green-light); border: 1.5px solid #c9a84c40;
@@ -778,7 +91,7 @@ Index · HTML
     display: flex; align-items: center; gap: 6px;
   }
   .pill-pts { font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: var(--green-main); }
- 
+
   .section-card { background: var(--white); border-radius: var(--radius); padding: 22px 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
   .section-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green-main); margin-bottom: 14px; }
   .id-row { display: flex; gap: 12px; align-items: flex-end; }
@@ -789,7 +102,7 @@ Index · HTML
     font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); outline: none; transition: border 0.2s; width: 100%;
   }
   input:focus { border-color: var(--green-main); }
- 
+
   .btn-save {
     background: linear-gradient(135deg, #c9a84c, #e8c96a); color: #0d1b2e; border: none;
     border-radius: 8px; padding: 11px 22px; font-family: 'DM Sans', sans-serif;
@@ -798,14 +111,14 @@ Index · HTML
   .btn-save:hover { opacity: 0.88; }
   .btn-save:active { transform: scale(0.97); }
   .btn-save:disabled { background: var(--gray-300); color: #fff; cursor: not-allowed; }
- 
+
   .phase-header {
     background: linear-gradient(135deg, #0d1b2e 0%, #1a3a5c 100%); color: var(--white);
     border-radius: var(--radius); padding: 13px 18px; font-family: 'Bebas Neue', sans-serif;
     font-size: 16px; letter-spacing: 1px; margin-bottom: 12px;
     display: flex; align-items: center; gap: 8px; border-left: 4px solid #c9a84c;
   }
- 
+
   /* GAME CARD */
   .game-card {
     background: var(--white); border-radius: var(--radius); padding: 14px 16px;
@@ -824,7 +137,7 @@ Index · HTML
   .game-inputs { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
   .score-input { width: 42px; text-align: center; padding: 8px 4px !important; font-size: 18px !important; font-weight: 700 !important; }
   .score-sep { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gray-300); }
- 
+
   /* RANKING */
   .ranking-table { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
   .ranking-row {
@@ -848,7 +161,7 @@ Index · HTML
     font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
   }
   .btn-refresh:hover { background: #c9a84c15; }
- 
+
   /* ADMIN */
   .admin-lock { background: var(--white); border-radius: var(--radius); padding: 32px 24px; box-shadow: var(--shadow); max-width: 400px; margin: 0 auto; text-align: center; }
   .admin-lock h2 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; margin-bottom: 6px; color: var(--green-mid); }
@@ -859,7 +172,7 @@ Index · HTML
   .result-card { background: var(--white); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; }
   .result-teams { flex: 1; font-weight: 600; font-size: 14px; }
   .result-meta { font-size: 11px; color: var(--gray-500); font-weight: 400; }
- 
+
   /* TOAST */
   .toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
@@ -869,20 +182,20 @@ Index · HTML
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
   .toast.error { background: var(--red); }
- 
+
   .loading { text-align: center; padding: 40px; color: var(--gray-500); font-size: 14px; }
   .spinner { width: 28px; height: 28px; border: 3px solid var(--gray-300); border-top-color: var(--green-main); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 12px; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .empty { text-align: center; padding: 40px; color: var(--gray-500); font-size: 14px; }
   .btn-danger { background: none; border: 1.5px solid var(--red); color: var(--red); border-radius: 8px; padding: 8px 16px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
   .btn-danger:hover { background: #fde8e8; }
- 
+
   .mt-16 { margin-top: 16px; }
   .mb-12 { margin-bottom: 12px; }
   .flex { display: flex; }
   .items-center { align-items: center; }
   .justify-between { justify-content: space-between; }
- 
+
   @media (max-width: 480px) {
     .id-row { flex-direction: column; align-items: stretch; }
     .btn-save { width: 100%; }
@@ -894,7 +207,7 @@ Index · HTML
 </style>
 </head>
 <body>
- 
+
 <div class="header">
   <div class="header-top">
     <div class="logo-icon">🏆</div>
@@ -909,7 +222,7 @@ Index · HTML
     <button class="nav-btn" onclick="showTab('admin', this)">🔧 Admin</button>
   </nav>
 </div>
- 
+
 <!-- RODADAS TOPBAR — só aparece na aba Palpitar -->
 <div class="rodadas-bar" id="rodadasBar">
   <button class="rodada-btn active" onclick="showRodada('r1', this)">Rodada 1</button>
@@ -917,12 +230,12 @@ Index · HTML
   <button class="rodada-btn" onclick="showRodada('r3', this)">Rodada 3</button>
   <button class="rodada-btn" onclick="showRodada('mata', this)">Mata-mata</button>
 </div>
- 
+
 <div class="main">
- 
+
   <!-- TAB: PALPITAR -->
   <div class="tab active" id="tab-palpitar">
- 
+
     <div class="score-card">
       <div class="score-card-title">Pontuação</div>
       <div class="score-pills">
@@ -933,7 +246,7 @@ Index · HTML
         <div class="pill"><span class="pill-pts">0</span> ❌ Errou tudo</div>
       </div>
     </div>
- 
+
     <div class="section-card">
       <div class="section-label">Identificação</div>
       <div class="id-row">
@@ -944,29 +257,29 @@ Index · HTML
         <button class="btn-save" onclick="savePalpites()">Salvar palpites</button>
       </div>
     </div>
- 
+
     <!-- RODADA 1 -->
     <div class="rodada-panel active" id="panel-r1">
       <div id="jogosR1"></div>
     </div>
- 
+
     <!-- RODADA 2 -->
     <div class="rodada-panel" id="panel-r2">
       <div id="jogosR2"></div>
     </div>
- 
+
     <!-- RODADA 3 -->
     <div class="rodada-panel" id="panel-r3">
       <div id="jogosR3"></div>
     </div>
- 
+
     <!-- MATA-MATA -->
     <div class="rodada-panel" id="panel-mata">
       <div id="jogosMata"></div>
     </div>
- 
+
   </div>
- 
+
   <!-- TAB: RANKING -->
   <div class="tab" id="tab-ranking">
     <div class="ranking-header">
@@ -977,7 +290,7 @@ Index · HTML
       <div class="loading"><div class="spinner"></div>Carregando ranking...</div>
     </div>
   </div>
- 
+
   <!-- TAB: ADMIN -->
   <div class="tab" id="tab-admin">
     <div class="admin-lock" id="adminLock">
@@ -1000,14 +313,14 @@ Index · HTML
       <button class="btn-save mt-16" style="width:100%" onclick="saveResultados()">💾 Salvar Resultados</button>
     </div>
   </div>
- 
+
 </div>
- 
+
 <div class="toast" id="toast"></div>
- 
+
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxD98qHxM4IZrngx1xj_3jM5tEVD0ZO3TT1ttuQJ1pvnZlhaLnzGGWQF42VeTUZfs1G/exec';
- 
+
 // Mapa de bandeiras por time
 const FLAGS = {
   'México': '🇲🇽', 'África do Sul': '🇿🇦', 'Coreia do Sul': '🇰🇷', 'Rep. Tcheca': '🇨🇿',
@@ -1024,11 +337,11 @@ const FLAGS = {
   'Inglaterra': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'Croácia': '🇭🇷', 'Gana': '🇬🇭', 'Panamá': '🇵🇦',
   'A definir': '❓',
 };
- 
+
 function flag(team) {
   return FLAGS[team] || '🏳️';
 }
- 
+
 // JOGOS separados por rodada
 const JOGOS_R1 = [
   { id:'A001', fase:'Fase de Grupos', grupo:'Grupo A', time1:'México',        time2:'África do Sul',  data:'11/06' },
@@ -1056,7 +369,7 @@ const JOGOS_R1 = [
   { id:'L001', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Inglaterra',    time2:'Croácia',        data:'17/06' },
   { id:'L002', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Gana',          time2:'Panamá',         data:'17/06' },
 ];
- 
+
 const JOGOS_R2 = [
   { id:'A003', fase:'Fase de Grupos', grupo:'Grupo A', time1:'México',        time2:'Coreia do Sul',  data:'22/06' },
   { id:'A004', fase:'Fase de Grupos', grupo:'Grupo A', time1:'África do Sul', time2:'Rep. Tcheca',    data:'18/06' },
@@ -1083,7 +396,7 @@ const JOGOS_R2 = [
   { id:'L003', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Inglaterra',    time2:'Gana',           data:'23/06' },
   { id:'L004', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Panamá',        time2:'Croácia',        data:'23/06' },
 ];
- 
+
 const JOGOS_R3 = [
   { id:'A005', fase:'Fase de Grupos', grupo:'Grupo A', time1:'México',        time2:'Rep. Tcheca',    data:'24/06' },
   { id:'A006', fase:'Fase de Grupos', grupo:'Grupo A', time1:'África do Sul', time2:'Coreia do Sul',  data:'24/06' },
@@ -1110,7 +423,7 @@ const JOGOS_R3 = [
   { id:'L005', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Panamá',        time2:'Inglaterra',     data:'27/06' },
   { id:'L006', fase:'Fase de Grupos', grupo:'Grupo L', time1:'Croácia',       time2:'Gana',           data:'27/06' },
 ];
- 
+
 const JOGOS_MATA = [
   { id:'R001', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'28/06' },
   { id:'R002', fase:'Rodada de 32', grupo:'Rodada de 32', time1:'A definir', time2:'A definir', data:'28/06' },
@@ -1145,13 +458,13 @@ const JOGOS_MATA = [
   { id:'T001', fase:'Terceiro Lugar', grupo:'Terceiro Lugar', time1:'A definir', time2:'A definir', data:'18/07' },
   { id:'X001', fase:'Final', grupo:'Final', time1:'A definir', time2:'A definir', data:'19/07' },
 ];
- 
+
 const JOGOS = [...JOGOS_R1, ...JOGOS_R2, ...JOGOS_R3, ...JOGOS_MATA];
- 
+
 let palpitesLocais = {};
 let adminLoggedIn = false;
 let resultadosAdmin = {};
- 
+
 // ── TABS ──
 function showTab(tab, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1162,7 +475,7 @@ function showTab(tab, btn) {
   if (tab === 'ranking') loadRanking();
   if (tab === 'admin' && adminLoggedIn) loadAdminJogos();
 }
- 
+
 // ── RODADAS ──
 function showRodada(rodada, btn) {
   document.querySelectorAll('.rodada-panel').forEach(p => p.classList.remove('active'));
@@ -1170,7 +483,7 @@ function showRodada(rodada, btn) {
   document.getElementById('panel-' + rodada).classList.add('active');
   btn.classList.add('active');
 }
- 
+
 // ── RENDER JOGOS ──
 function buildGameCard(j) {
   const p = palpitesLocais[j.id] || { t1: '', t2: '' };
@@ -1199,7 +512,7 @@ function buildGameCard(j) {
     </div>
   </div>`;
 }
- 
+
 function renderGrupos(jogos, containerId) {
   const container = document.getElementById(containerId);
   const grupos = {};
@@ -1219,26 +532,26 @@ function renderGrupos(jogos, containerId) {
   }
   container.innerHTML = html;
 }
- 
+
 function renderTodosJogos() {
   renderGrupos(JOGOS_R1, 'jogosR1');
   renderGrupos(JOGOS_R2, 'jogosR2');
   renderGrupos(JOGOS_R3, 'jogosR3');
   renderGrupos(JOGOS_MATA, 'jogosMata');
 }
- 
+
 function savePalpiteLocal(jogoId) {
   palpitesLocais[jogoId] = {
     t1: document.getElementById('p_' + jogoId + '_1').value,
     t2: document.getElementById('p_' + jogoId + '_2').value
   };
 }
- 
+
 // ── SALVAR PALPITES ──
 async function savePalpites() {
   const name = document.getElementById('playerName').value.trim();
   if (!name) { showToast('Digite seu nome antes de salvar!', true); return; }
- 
+
   const entries = [];
   JOGOS.forEach(j => {
     const v1 = document.getElementById('p_' + j.id + '_1')?.value;
@@ -1247,12 +560,12 @@ async function savePalpites() {
       entries.push({ jogoId: j.id, time1: j.time1, time2: j.time2, placar1: v1, placar2: v2 });
     }
   });
- 
+
   if (!entries.length) { showToast('Preencha pelo menos um palpite!', true); return; }
- 
+
   const btn = document.querySelector('.btn-save');
   btn.disabled = true; btn.textContent = 'Salvando...';
- 
+
   try {
     const res = await fetch(SCRIPT_URL, {
       method: 'POST',
@@ -1266,7 +579,7 @@ async function savePalpites() {
   }
   btn.disabled = false; btn.textContent = 'Salvar palpites';
 }
- 
+
 // ── RANKING ──
 async function loadRanking() {
   const c = document.getElementById('rankingContainer');
@@ -1279,7 +592,7 @@ async function loadRanking() {
     c.innerHTML = '<div class="empty">Erro ao carregar ranking.</div>';
   }
 }
- 
+
 function renderRanking(ranking) {
   const c = document.getElementById('rankingContainer');
   if (!ranking.length) { c.innerHTML = '<div class="empty">Nenhum palpite salvo ainda.</div>'; return; }
@@ -1302,7 +615,7 @@ function renderRanking(ranking) {
   html += '</div>';
   c.innerHTML = html;
 }
- 
+
 // ── ADMIN ──
 async function adminLogin() {
   const pass = document.getElementById('adminPass').value;
@@ -1317,14 +630,14 @@ async function adminLogin() {
     } else showToast('Senha incorreta!', true);
   } catch (e) { showToast('Erro de conexão.', true); }
 }
- 
+
 function adminLogout() {
   adminLoggedIn = false;
   document.getElementById('adminLock').style.display = 'block';
   document.getElementById('adminPanel').classList.remove('active');
   document.getElementById('adminPass').value = '';
 }
- 
+
 function loadAdminJogos() {
   const c = document.getElementById('adminJogosContainer');
   let html = '<div class="results-grid">';
@@ -1346,14 +659,14 @@ function loadAdminJogos() {
   html += '</div>';
   c.innerHTML = html;
 }
- 
+
 function saveResultadoLocal(jogoId) {
   resultadosAdmin[jogoId] = {
     t1: document.getElementById('r_' + jogoId + '_1').value,
     t2: document.getElementById('r_' + jogoId + '_2').value
   };
 }
- 
+
 async function saveResultados() {
   const entries = [];
   JOGOS.forEach(j => {
@@ -1374,7 +687,7 @@ async function saveResultados() {
     else showToast('Erro: ' + (data.error || 'Tente novamente'), true);
   } catch (e) { showToast('Erro de conexão.', true); }
 }
- 
+
 // ── TOAST ──
 function showToast(msg, isError = false) {
   const t = document.getElementById('toast');
@@ -1384,14 +697,9 @@ function showToast(msg, isError = false) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
- 
+
 // INIT
 renderTodosJogos();
 </script>
 </body>
 </html>
- 
-
-
-
-
