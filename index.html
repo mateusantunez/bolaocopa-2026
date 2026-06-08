@@ -27,7 +27,6 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'DM Sans', sans-serif; background: var(--green-pale); color: var(--text); min-height: 100vh; }
 
-  /* HEADER */
   .header {
     background: linear-gradient(135deg, #0d1b2e 0%, #1a3a5c 100%);
     padding: 18px 24px 0;
@@ -51,7 +50,6 @@
   .nav-btn.active { color: var(--white); border-bottom-color: var(--yellow); }
   .nav-btn:hover { color: var(--white); }
 
-  /* RODADAS TOPBAR */
   .rodadas-bar {
     background: var(--white);
     border-bottom: 1px solid var(--gray-100);
@@ -78,7 +76,6 @@
   .rodada-panel { display: none; }
   .rodada-panel.active { display: block; }
 
-  /* SCORE CARD */
   .score-card {
     background: var(--green-light); border: 1.5px solid #c9a84c40;
     border-radius: var(--radius); padding: 18px 20px; margin-bottom: 20px;
@@ -119,7 +116,6 @@
     display: flex; align-items: center; gap: 8px; border-left: 4px solid #c9a84c;
   }
 
-  /* GAME CARD */
   .game-card {
     background: var(--white); border-radius: var(--radius); padding: 14px 16px;
     margin-bottom: 10px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px;
@@ -129,8 +125,6 @@
   .game-teams { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
   .team-block { display: flex; align-items: center; gap: 6px; flex: 1; }
   .team-block.right { flex-direction: row-reverse; }
-  .team-flag { font-size: 20px; line-height: 1; flex-shrink: 0; }
-  .team-flag.unknown { font-size: 14px; }
   .team-name { font-size: 13px; font-weight: 700; }
   .team-block.right .team-name { text-align: right; }
   .vs-text { font-family: 'Bebas Neue', sans-serif; font-size: 13px; color: var(--gray-300); flex-shrink: 0; }
@@ -138,7 +132,29 @@
   .score-input { width: 42px; text-align: center; padding: 8px 4px !important; font-size: 18px !important; font-weight: 700 !important; }
   .score-sep { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gray-300); }
 
-  /* RANKING */
+  /* FLAG IMAGE */
+  .team-flag-img {
+    width: 28px;
+    height: 20px;
+    object-fit: cover;
+    border-radius: 3px;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+    background: var(--gray-100);
+  }
+  .team-flag-unknown {
+    width: 28px;
+    height: 20px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    background: var(--gray-300);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--gray-500);
+  }
+
   .ranking-table { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
   .ranking-row {
     display: flex; align-items: center; padding: 14px 18px;
@@ -162,7 +178,6 @@
   }
   .btn-refresh:hover { background: #c9a84c15; }
 
-  /* ADMIN */
   .admin-lock { background: var(--white); border-radius: var(--radius); padding: 32px 24px; box-shadow: var(--shadow); max-width: 400px; margin: 0 auto; text-align: center; }
   .admin-lock h2 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; margin-bottom: 6px; color: var(--green-mid); }
   .admin-lock p { font-size: 13px; color: var(--gray-500); margin-bottom: 20px; }
@@ -173,7 +188,6 @@
   .result-teams { flex: 1; font-weight: 600; font-size: 14px; }
   .result-meta { font-size: 11px; color: var(--gray-500); font-weight: 400; }
 
-  /* TOAST */
   .toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
     background: #0d1b2e; color: var(--white); padding: 14px 24px; border-radius: 50px;
@@ -223,7 +237,6 @@
   </nav>
 </div>
 
-<!-- RODADAS TOPBAR — só aparece na aba Palpitar -->
 <div class="rodadas-bar" id="rodadasBar">
   <button class="rodada-btn active" onclick="showRodada('r1', this)">Rodada 1</button>
   <button class="rodada-btn" onclick="showRodada('r2', this)">Rodada 2</button>
@@ -233,7 +246,6 @@
 
 <div class="main">
 
-  <!-- TAB: PALPITAR -->
   <div class="tab active" id="tab-palpitar">
 
     <div class="score-card">
@@ -258,29 +270,21 @@
       </div>
     </div>
 
-    <!-- RODADA 1 -->
     <div class="rodada-panel active" id="panel-r1">
       <div id="jogosR1"></div>
     </div>
-
-    <!-- RODADA 2 -->
     <div class="rodada-panel" id="panel-r2">
       <div id="jogosR2"></div>
     </div>
-
-    <!-- RODADA 3 -->
     <div class="rodada-panel" id="panel-r3">
       <div id="jogosR3"></div>
     </div>
-
-    <!-- MATA-MATA -->
     <div class="rodada-panel" id="panel-mata">
       <div id="jogosMata"></div>
     </div>
 
   </div>
 
-  <!-- TAB: RANKING -->
   <div class="tab" id="tab-ranking">
     <div class="ranking-header">
       <div class="section-label" style="margin:0">Classificação</div>
@@ -291,7 +295,6 @@
     </div>
   </div>
 
-  <!-- TAB: ADMIN -->
   <div class="tab" id="tab-admin">
     <div class="admin-lock" id="adminLock">
       <div style="font-size:36px;margin-bottom:12px">🔐</div>
@@ -321,28 +324,64 @@
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxD98qHxM4IZrngx1xj_3jM5tEVD0ZO3TT1ttuQJ1pvnZlhaLnzGGWQF42VeTUZfs1G/exec';
 
-// Mapa de bandeiras por time
-const FLAGS = {
-  'México': '🇲🇽', 'África do Sul': '🇿🇦', 'Coreia do Sul': '🇰🇷', 'Rep. Tcheca': '🇨🇿',
-  'Canadá': '🇨🇦', 'Itália': '🇮🇹', 'Catar': '🇶🇦', 'Suíça': '🇨🇭',
-  'Brasil': '🇧🇷', 'Marrocos': '🇲🇦', 'Haiti': '🇭🇹', 'Escócia': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-  'Estados Unidos': '🇺🇸', 'Paraguai': '🇵🇾', 'Austrália': '🇦🇺', 'Turquia': '🇹🇷',
-  'Alemanha': '🇩🇪', 'Curaçao': '🇨🇼', 'Costa do Marfim': '🇨🇮', 'Equador': '🇪🇨',
-  'Holanda': '🇳🇱', 'Japão': '🇯🇵', 'Tunísia': '🇹🇳', 'Ucrânia': '🇺🇦',
-  'Bélgica': '🇧🇪', 'Egito': '🇪🇬', 'Irã': '🇮🇷', 'Nova Zelândia': '🇳🇿',
-  'Espanha': '🇪🇸', 'Cabo Verde': '🇨🇻', 'Arábia Saudita': '🇸🇦', 'Uruguai': '🇺🇾',
-  'França': '🇫🇷', 'Senegal': '🇸🇳', 'Iraque': '🇮🇶', 'Noruega': '🇳🇴',
-  'Argentina': '🇦🇷', 'Argélia': '🇩🇿', 'Áustria': '🇦🇹', 'Jordânia': '🇯🇴',
-  'Portugal': '🇵🇹', 'Uzbequistão': '🇺🇿', 'Colômbia': '🇨🇴', 'Congo DR': '🇨🇩',
-  'Inglaterra': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'Croácia': '🇭🇷', 'Gana': '🇬🇭', 'Panamá': '🇵🇦',
-  'A definir': '❓',
+// Mapa de códigos ISO para flagcdn.com
+const FLAG_CODES = {
+  'México': 'mx',
+  'África do Sul': 'za',
+  'Coreia do Sul': 'kr',
+  'Rep. Tcheca': 'cz',
+  'Canadá': 'ca',
+  'Itália': 'it',
+  'Catar': 'qa',
+  'Suíça': 'ch',
+  'Brasil': 'br',
+  'Marrocos': 'ma',
+  'Haiti': 'ht',
+  'Escócia': 'gb-sct',
+  'Estados Unidos': 'us',
+  'Paraguai': 'py',
+  'Austrália': 'au',
+  'Turquia': 'tr',
+  'Alemanha': 'de',
+  'Curaçao': 'cw',
+  'Costa do Marfim': 'ci',
+  'Equador': 'ec',
+  'Holanda': 'nl',
+  'Japão': 'jp',
+  'Tunísia': 'tn',
+  'Ucrânia': 'ua',
+  'Bélgica': 'be',
+  'Egito': 'eg',
+  'Irã': 'ir',
+  'Nova Zelândia': 'nz',
+  'Espanha': 'es',
+  'Cabo Verde': 'cv',
+  'Arábia Saudita': 'sa',
+  'Uruguai': 'uy',
+  'França': 'fr',
+  'Senegal': 'sn',
+  'Iraque': 'iq',
+  'Noruega': 'no',
+  'Argentina': 'ar',
+  'Argélia': 'dz',
+  'Áustria': 'at',
+  'Jordânia': 'jo',
+  'Portugal': 'pt',
+  'Uzbequistão': 'uz',
+  'Colômbia': 'co',
+  'Congo DR': 'cd',
+  'Inglaterra': 'gb-eng',
+  'Croácia': 'hr',
+  'Gana': 'gh',
+  'Panamá': 'pa',
 };
 
-function flag(team) {
-  return FLAGS[team] || '🏳️';
+function flagHTML(team) {
+  const code = FLAG_CODES[team];
+  if (!code) return `<div class="team-flag-unknown">?</div>`;
+  return `<img class="team-flag-img" src="https://flagcdn.com/w40/${code}.png" alt="${team}" loading="lazy">`;
 }
 
-// JOGOS separados por rodada
 const JOGOS_R1 = [
   { id:'A001', fase:'Fase de Grupos', grupo:'Grupo A', time1:'México',        time2:'África do Sul',  data:'11/06' },
   { id:'A002', fase:'Fase de Grupos', grupo:'Grupo A', time1:'Coreia do Sul', time2:'Rep. Tcheca',    data:'11/06' },
@@ -465,7 +504,6 @@ let palpitesLocais = {};
 let adminLoggedIn = false;
 let resultadosAdmin = {};
 
-// ── TABS ──
 function showTab(tab, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -476,7 +514,6 @@ function showTab(tab, btn) {
   if (tab === 'admin' && adminLoggedIn) loadAdminJogos();
 }
 
-// ── RODADAS ──
 function showRodada(rodada, btn) {
   document.querySelectorAll('.rodada-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.rodada-btn').forEach(b => b.classList.remove('active'));
@@ -484,24 +521,23 @@ function showRodada(rodada, btn) {
   btn.classList.add('active');
 }
 
-// ── RENDER JOGOS ──
 function buildGameCard(j) {
   const p = palpitesLocais[j.id] || { t1: '', t2: '' };
-  const f1 = flag(j.time1);
-  const f2 = flag(j.time2);
+  const f1 = flagHTML(j.time1);
+  const f2 = flagHTML(j.time2);
   return `
   <div class="game-card">
     <div class="game-info">
       <div class="game-meta">${j.data} &nbsp;·&nbsp; ${j.grupo}</div>
       <div class="game-teams">
         <div class="team-block">
-          <span class="team-flag">${f1}</span>
+          ${f1}
           <span class="team-name">${j.time1}</span>
         </div>
         <span class="vs-text">VS</span>
         <div class="team-block right">
           <span class="team-name">${j.time2}</span>
-          <span class="team-flag">${f2}</span>
+          ${f2}
         </div>
       </div>
     </div>
@@ -547,7 +583,6 @@ function savePalpiteLocal(jogoId) {
   };
 }
 
-// ── SALVAR PALPITES ──
 async function savePalpites() {
   const name = document.getElementById('playerName').value.trim();
   if (!name) { showToast('Digite seu nome antes de salvar!', true); return; }
@@ -580,7 +615,6 @@ async function savePalpites() {
   btn.disabled = false; btn.textContent = 'Salvar palpites';
 }
 
-// ── RANKING ──
 async function loadRanking() {
   const c = document.getElementById('rankingContainer');
   c.innerHTML = '<div class="loading"><div class="spinner"></div>Calculando ranking...</div>';
@@ -616,7 +650,6 @@ function renderRanking(ranking) {
   c.innerHTML = html;
 }
 
-// ── ADMIN ──
 async function adminLogin() {
   const pass = document.getElementById('adminPass').value;
   try {
@@ -646,7 +679,7 @@ function loadAdminJogos() {
     html += `
     <div class="result-card">
       <div class="result-teams">
-        <div>${flag(j.time1)} ${j.time1} vs ${j.time2} ${flag(j.time2)}</div>
+        <div style="display:flex;align-items:center;gap:6px">${flagHTML(j.time1)} ${j.time1} vs ${j.time2} ${flagHTML(j.time2)}</div>
         <div class="result-meta">${j.data} · ${j.grupo}</div>
       </div>
       <div class="game-inputs">
@@ -688,7 +721,6 @@ async function saveResultados() {
   } catch (e) { showToast('Erro de conexão.', true); }
 }
 
-// ── TOAST ──
 function showToast(msg, isError = false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -698,7 +730,6 @@ function showToast(msg, isError = false) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// INIT
 renderTodosJogos();
 </script>
 </body>
