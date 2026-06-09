@@ -65,16 +65,44 @@
     font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 700;
     color: var(--gray-500); padding: 12px 16px; cursor: pointer;
     transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px;
-    white-space: nowrap;
+    white-space: nowrap; display: flex; align-items: center; gap: 5px;
   }
   .rodada-btn.active { color: var(--green-main); border-bottom-color: var(--green-main); }
   .rodada-btn:hover { color: var(--text); }
+  .rodada-btn.locked { color: var(--red); opacity: 0.7; }
+  .rodada-btn.locked.active { color: var(--red); border-bottom-color: var(--red); }
 
   .main { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
   .tab { display: none; }
   .tab.active { display: block; }
   .rodada-panel { display: none; }
   .rodada-panel.active { display: block; }
+
+  /* LOCKED PHASE BANNER */
+  .locked-banner {
+    background: linear-gradient(135deg, #fff5f5, #fde8e8);
+    border: 1.5px solid #f5c6c6;
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .locked-banner-icon { font-size: 24px; flex-shrink: 0; }
+  .locked-banner-text h3 { font-size: 14px; font-weight: 700; color: var(--red); margin-bottom: 2px; }
+  .locked-banner-text p { font-size: 12px; color: #a33; }
+
+  /* INPUTS DISABLED STATE */
+  .panel-locked .score-input {
+    background: var(--gray-100);
+    color: var(--gray-300);
+    cursor: not-allowed;
+    border-color: var(--gray-100);
+  }
+  .panel-locked .game-card {
+    opacity: 0.55;
+  }
 
   .score-card {
     background: var(--green-light); border: 1.5px solid #c9a84c40;
@@ -119,6 +147,7 @@
   .game-card {
     background: var(--white); border-radius: var(--radius); padding: 14px 16px;
     margin-bottom: 10px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px;
+    transition: opacity 0.2s;
   }
   .game-info { flex: 1; min-width: 0; }
   .game-meta { font-size: 10px; color: var(--gray-500); margin-bottom: 8px; font-weight: 500; text-align: center; }
@@ -129,30 +158,18 @@
   .team-block.right .team-name { text-align: right; }
   .vs-text { font-family: 'Bebas Neue', sans-serif; font-size: 13px; color: var(--gray-300); flex-shrink: 0; }
   .game-inputs { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
-  .score-input { width: 42px; text-align: center; padding: 8px 4px !important; font-size: 18px !important; font-weight: 700 !important; }
+  .score-input { width: 42px; text-align: center; padding: 8px 4px !important; font-size: 18px !important; font-weight: 700 !important; transition: background 0.2s, color 0.2s, border-color 0.2s; }
   .score-sep { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--gray-300); }
 
   /* FLAG IMAGE */
   .team-flag-img {
-    width: 28px;
-    height: 20px;
-    object-fit: cover;
-    border-radius: 3px;
-    flex-shrink: 0;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-    background: var(--gray-100);
+    width: 28px; height: 20px; object-fit: cover; border-radius: 3px;
+    flex-shrink: 0; box-shadow: 0 1px 4px rgba(0,0,0,0.15); background: var(--gray-100);
   }
   .team-flag-unknown {
-    width: 28px;
-    height: 20px;
-    border-radius: 3px;
-    flex-shrink: 0;
-    background: var(--gray-300);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    color: var(--gray-500);
+    width: 28px; height: 20px; border-radius: 3px; flex-shrink: 0;
+    background: var(--gray-300); display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--gray-500);
   }
 
   .ranking-table { background: var(--white); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
@@ -187,6 +204,43 @@
   .result-card { background: var(--white); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); display: flex; align-items: center; gap: 12px; }
   .result-teams { flex: 1; font-weight: 600; font-size: 14px; }
   .result-meta { font-size: 11px; color: var(--gray-500); font-weight: 400; }
+
+  /* PHASE CONTROL CARD */
+  .phase-control-card {
+    background: var(--white); border-radius: var(--radius);
+    padding: 20px; margin-bottom: 20px; box-shadow: var(--shadow);
+  }
+  .phase-control-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+  .phase-row {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--green-pale); border-radius: 10px; padding: 12px 16px;
+    border: 1.5px solid var(--gray-100); transition: border-color 0.2s;
+  }
+  .phase-row.is-locked { background: #fff5f5; border-color: #f5c6c6; }
+  .phase-row-info { display: flex; flex-direction: column; gap: 2px; }
+  .phase-row-name { font-size: 14px; font-weight: 700; color: var(--text); }
+  .phase-row-status { font-size: 11px; font-weight: 600; }
+  .phase-row-status.open { color: #2a9d58; }
+  .phase-row-status.locked { color: var(--red); }
+  .btn-phase-toggle {
+    border: none; border-radius: 8px; padding: 8px 16px; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+    white-space: nowrap;
+  }
+  .btn-phase-toggle.btn-lock {
+    background: #fff0f0; color: var(--red); border: 1.5px solid #f5c6c6;
+  }
+  .btn-phase-toggle.btn-lock:hover { background: #fde8e8; }
+  .btn-phase-toggle.btn-unlock {
+    background: #f0faf4; color: #2a9d58; border: 1.5px solid #b7e5c8;
+  }
+  .btn-phase-toggle.btn-unlock:hover { background: #d9f2e4; }
+  .btn-phase-toggle:disabled { opacity: 0.5; cursor: not-allowed; }
+  .phase-control-note {
+    font-size: 11px; color: var(--gray-500); margin-top: 10px;
+    padding: 8px 12px; background: var(--gray-100); border-radius: 6px;
+    display: flex; align-items: flex-start; gap: 6px;
+  }
 
   .toast {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
@@ -238,10 +292,10 @@
 </div>
 
 <div class="rodadas-bar" id="rodadasBar">
-  <button class="rodada-btn active" onclick="showRodada('r1', this)">Rodada 1</button>
-  <button class="rodada-btn" onclick="showRodada('r2', this)">Rodada 2</button>
-  <button class="rodada-btn" onclick="showRodada('r3', this)">Rodada 3</button>
-  <button class="rodada-btn" onclick="showRodada('mata', this)">Mata-mata</button>
+  <button class="rodada-btn active" id="tab-btn-r1" onclick="showRodada('r1', this)">Rodada 1</button>
+  <button class="rodada-btn" id="tab-btn-r2" onclick="showRodada('r2', this)">Rodada 2</button>
+  <button class="rodada-btn" id="tab-btn-r3" onclick="showRodada('r3', this)">Rodada 3</button>
+  <button class="rodada-btn" id="tab-btn-mata" onclick="showRodada('mata', this)">Mata-mata</button>
 </div>
 
 <div class="main">
@@ -306,10 +360,27 @@
       </div>
       <button class="btn-save" style="width:100%" onclick="adminLogin()">Entrar no painel</button>
     </div>
+
     <div class="admin-panel" id="adminPanel">
       <div class="flex items-center justify-between mb-12">
-        <div class="section-label" style="margin:0">Lançar Resultados</div>
+        <div class="section-label" style="margin:0">Painel Admin</div>
         <button class="btn-danger" onclick="adminLogout()">Sair</button>
+      </div>
+
+      <!-- PHASE CONTROL SECTION -->
+      <div class="phase-control-card">
+        <div class="section-label" style="margin:0">🔒 Controle de Fases</div>
+        <div class="phase-control-grid" id="phaseControlGrid">
+          <!-- Rendered by JS -->
+        </div>
+        <div class="phase-control-note">
+          ℹ️ Fases travadas não aceitam novos palpites. Trave cada rodada assim que os jogos começarem.
+        </div>
+      </div>
+
+      <!-- RESULTS SECTION -->
+      <div class="flex items-center justify-between" style="margin-bottom:8px">
+        <div class="section-label" style="margin:0">📋 Lançar Resultados</div>
       </div>
       <p style="font-size:13px;color:var(--gray-500);margin-bottom:16px">Preencha apenas jogos já disputados e clique em Salvar Resultados.</p>
       <div id="adminJogosContainer"><div class="loading"><div class="spinner"></div>Carregando jogos...</div></div>
@@ -324,56 +395,30 @@
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxD98qHxM4IZrngx1xj_3jM5tEVD0ZO3TT1ttuQJ1pvnZlhaLnzGGWQF42VeTUZfs1G/exec';
 
-// Mapa de códigos ISO para flagcdn.com
+const FASE_NAMES = {
+  r1:   'Rodada 1',
+  r2:   'Rodada 2',
+  r3:   'Rodada 3',
+  mata: 'Mata-mata',
+};
+
+// faseStatus: false = aberta, true = travada
+let faseStatus = { r1: false, r2: false, r3: false, mata: false };
+
+// ─── FLAGS ────────────────────────────────────────────────────────────────────
 const FLAG_CODES = {
-  'México': 'mx',
-  'África do Sul': 'za',
-  'Coreia do Sul': 'kr',
-  'Rep. Tcheca': 'cz',
-  'Canadá': 'ca',
-  'Bósnia': 'ba',
-  'Catar': 'qa',
-  'Suíça': 'ch',
-  'Brasil': 'br',
-  'Marrocos': 'ma',
-  'Haiti': 'ht',
-  'Escócia': 'gb-sct',
-  'Estados Unidos': 'us',
-  'Paraguai': 'py',
-  'Austrália': 'au',
-  'Turquia': 'tr',
-  'Alemanha': 'de',
-  'Curaçao': 'cw',
-  'Costa do Marfim': 'ci',
-  'Equador': 'ec',
-  'Holanda': 'nl',
-  'Japão': 'jp',
-  'Tunísia': 'tn',
-  'Suécia': 'se',
-  'Bélgica': 'be',
-  'Egito': 'eg',
-  'Irã': 'ir',
-  'Nova Zelândia': 'nz',
-  'Espanha': 'es',
-  'Cabo Verde': 'cv',
-  'Arábia Saudita': 'sa',
-  'Uruguai': 'uy',
-  'França': 'fr',
-  'Senegal': 'sn',
-  'Iraque': 'iq',
-  'Noruega': 'no',
-  'Argentina': 'ar',
-  'Argélia': 'dz',
-  'Áustria': 'at',
-  'Jordânia': 'jo',
-  'Portugal': 'pt',
-  'Uzbequistão': 'uz',
-  'Colômbia': 'co',
-  'Congo DR': 'cd',
-  'Inglaterra': 'gb-eng',
-  'Croácia': 'hr',
-  'Gana': 'gh',
-  'Panamá': 'pa',
+  'México': 'mx', 'África do Sul': 'za', 'Coreia do Sul': 'kr', 'Rep. Tcheca': 'cz',
+  'Canadá': 'ca', 'Bósnia': 'ba', 'Catar': 'qa', 'Suíça': 'ch', 'Brasil': 'br',
+  'Marrocos': 'ma', 'Haiti': 'ht', 'Escócia': 'gb-sct', 'Estados Unidos': 'us',
+  'Paraguai': 'py', 'Austrália': 'au', 'Turquia': 'tr', 'Alemanha': 'de',
+  'Curaçao': 'cw', 'Costa do Marfim': 'ci', 'Equador': 'ec', 'Holanda': 'nl',
+  'Japão': 'jp', 'Tunísia': 'tn', 'Suécia': 'se', 'Bélgica': 'be', 'Egito': 'eg',
+  'Irã': 'ir', 'Nova Zelândia': 'nz', 'Espanha': 'es', 'Cabo Verde': 'cv',
+  'Arábia Saudita': 'sa', 'Uruguai': 'uy', 'França': 'fr', 'Senegal': 'sn',
+  'Iraque': 'iq', 'Noruega': 'no', 'Argentina': 'ar', 'Argélia': 'dz',
+  'Áustria': 'at', 'Jordânia': 'jo', 'Portugal': 'pt', 'Uzbequistão': 'uz',
+  'Colômbia': 'co', 'Congo DR': 'cd', 'Inglaterra': 'gb-eng', 'Croácia': 'hr',
+  'Gana': 'gh', 'Panamá': 'pa',
 };
 
 function flagHTML(team) {
@@ -382,6 +427,7 @@ function flagHTML(team) {
   return `<img class="team-flag-img" src="https://flagcdn.com/w40/${code}.png" alt="${team}" loading="lazy">`;
 }
 
+// ─── GAMES DATA ───────────────────────────────────────────────────────────────
 const JOGOS_R1 = [
   { id:'A001', fase:'Fase de Grupos', grupo:'Grupo A', time1:'México',        time2:'África do Sul',  data:'11/06' },
   { id:'A002', fase:'Fase de Grupos', grupo:'Grupo A', time1:'Coreia do Sul', time2:'Rep. Tcheca',    data:'11/06' },
@@ -394,7 +440,7 @@ const JOGOS_R1 = [
   { id:'E001', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Alemanha',      time2:'Curaçao',        data:'14/06' },
   { id:'E002', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Costa do Marfim',time2:'Equador',       data:'14/06' },
   { id:'F001', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Holanda',       time2:'Japão',          data:'14/06' },
-  { id:'F002', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Suécia',       time2:'Tunísia',        data:'14/06' },
+  { id:'F002', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Suécia',        time2:'Tunísia',        data:'14/06' },
   { id:'G001', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Bélgica',       time2:'Egito',          data:'15/06' },
   { id:'G002', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Irã',           time2:'Nova Zelândia',  data:'15/06' },
   { id:'H001', fase:'Fase de Grupos', grupo:'Grupo H', time1:'Espanha',       time2:'Cabo Verde',     data:'15/06' },
@@ -420,7 +466,7 @@ const JOGOS_R2 = [
   { id:'D004', fase:'Fase de Grupos', grupo:'Grupo D', time1:'Turquia',       time2:'Paraguai',       data:'19/06' },
   { id:'E003', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Alemanha',      time2:'Costa do Marfim',data:'20/06' },
   { id:'E004', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Equador',       time2:'Curaçao',        data:'21/06' },
-  { id:'F003', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Holanda',       time2:'Suécia',        data:'20/06' },
+  { id:'F003', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Holanda',       time2:'Suécia',         data:'20/06' },
   { id:'F004', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Tunísia',       time2:'Japão',          data:'21/06' },
   { id:'G003', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Bélgica',       time2:'Irã',            data:'21/06' },
   { id:'G004', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Nova Zelândia', time2:'Egito',          data:'21/06' },
@@ -447,7 +493,7 @@ const JOGOS_R3 = [
   { id:'D006', fase:'Fase de Grupos', grupo:'Grupo D', time1:'Paraguai',      time2:'Austrália',      data:'25/06' },
   { id:'E005', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Equador',       time2:'Alemanha',       data:'25/06' },
   { id:'E006', fase:'Fase de Grupos', grupo:'Grupo E', time1:'Curaçao',       time2:'Costa do Marfim',data:'25/06' },
-  { id:'F005', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Japão',         time2:'Suécia',        data:'25/06' },
+  { id:'F005', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Japão',         time2:'Suécia',         data:'25/06' },
   { id:'F006', fase:'Fase de Grupos', grupo:'Grupo F', time1:'Tunísia',       time2:'Holanda',        data:'25/06' },
   { id:'G005', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Nova Zelândia', time2:'Bélgica',        data:'27/06' },
   { id:'G006', fase:'Fase de Grupos', grupo:'Grupo G', time1:'Egito',         time2:'Irã',            data:'27/06' },
@@ -500,9 +546,145 @@ const JOGOS_MATA = [
 
 const JOGOS = [...JOGOS_R1, ...JOGOS_R2, ...JOGOS_R3, ...JOGOS_MATA];
 
+// Maps rodada key → array of games
+const RODADA_JOGOS = { r1: JOGOS_R1, r2: JOGOS_R2, r3: JOGOS_R3, mata: JOGOS_MATA };
+
 let palpitesLocais = {};
 let adminLoggedIn = false;
 let resultadosAdmin = {};
+
+// ─── PHASE LOCK/UNLOCK ────────────────────────────────────────────────────────
+
+async function loadFaseStatus() {
+  // Try to load from backend; fall back to localStorage
+  try {
+    const res = await fetch(SCRIPT_URL + '?action=getFaseStatus');
+    const data = await res.json();
+    if (data && data.faseStatus) {
+      faseStatus = { ...faseStatus, ...data.faseStatus };
+      persistFaseLocal();
+    }
+  } catch (e) {
+    // Fallback: load from localStorage
+    const saved = localStorage.getItem('bolao_faseStatus');
+    if (saved) {
+      try { faseStatus = { ...faseStatus, ...JSON.parse(saved) }; } catch(_) {}
+    }
+  }
+  applyFaseStatusUI();
+}
+
+function persistFaseLocal() {
+  localStorage.setItem('bolao_faseStatus', JSON.stringify(faseStatus));
+}
+
+async function toggleFase(key) {
+  const btn = document.getElementById('fase-btn-' + key);
+  if (btn) { btn.disabled = true; }
+
+  const newLocked = !faseStatus[key];
+  const prevStatus = { ...faseStatus };
+  faseStatus[key] = newLocked;
+  persistFaseLocal();
+  applyFaseStatusUI();
+  renderPhaseControlGrid(); // re-render admin buttons
+
+  const action = newLocked ? 'Travada' : 'Liberada';
+  showToast(`${action === 'Travada' ? '🔒' : '🔓'} ${FASE_NAMES[key]} ${action.toLowerCase()}!`);
+
+  // Sync with backend
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'setFaseStatus', faseStatus })
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
+  } catch (e) {
+    // Backend failed but local state is updated. 
+    // Note: other users won't see the change until backend is fixed.
+    console.warn('Falha ao sincronizar status com o backend:', e);
+  }
+
+  if (btn) { btn.disabled = false; }
+}
+
+function applyFaseStatusUI() {
+  // Update tab buttons in the rounds bar
+  Object.keys(faseStatus).forEach(key => {
+    const tabBtn = document.getElementById('tab-btn-' + key);
+    if (!tabBtn) return;
+    const isLocked = faseStatus[key];
+    tabBtn.classList.toggle('locked', isLocked);
+    // Update label with padlock icon
+    const baseName = FASE_NAMES[key];
+    tabBtn.innerHTML = isLocked ? `🔒 ${baseName}` : baseName;
+  });
+
+  // Enable/disable inputs per panel
+  Object.keys(faseStatus).forEach(key => {
+    const panel = document.getElementById('panel-' + key);
+    if (!panel) return;
+    const isLocked = faseStatus[key];
+
+    // Add/remove locked banner
+    let banner = panel.querySelector('.locked-banner');
+    if (isLocked) {
+      panel.classList.add('panel-locked');
+      if (!banner) {
+        banner = document.createElement('div');
+        banner.className = 'locked-banner';
+        banner.innerHTML = `
+          <div class="locked-banner-icon">🔒</div>
+          <div class="locked-banner-text">
+            <h3>Fase encerrada para palpites</h3>
+            <p>Os jogos desta rodada já começaram. Nenhum palpite pode mais ser enviado.</p>
+          </div>`;
+        panel.insertBefore(banner, panel.firstChild);
+      }
+      // Disable all score inputs in this panel
+      panel.querySelectorAll('.score-input').forEach(inp => {
+        inp.disabled = true;
+        inp.setAttribute('readonly', true);
+      });
+    } else {
+      panel.classList.remove('panel-locked');
+      if (banner) banner.remove();
+      // Re-enable inputs
+      panel.querySelectorAll('.score-input').forEach(inp => {
+        inp.disabled = false;
+        inp.removeAttribute('readonly');
+      });
+    }
+  });
+}
+
+function renderPhaseControlGrid() {
+  const grid = document.getElementById('phaseControlGrid');
+  if (!grid) return;
+  let html = '';
+  Object.keys(FASE_NAMES).forEach(key => {
+    const locked = faseStatus[key];
+    html += `
+    <div class="phase-row ${locked ? 'is-locked' : ''}">
+      <div class="phase-row-info">
+        <div class="phase-row-name">${locked ? '🔒' : '🔓'} ${FASE_NAMES[key]}</div>
+        <div class="phase-row-status ${locked ? 'locked' : 'open'}">
+          ${locked ? 'Travada — palpites encerrados' : 'Aberta — palpites permitidos'}
+        </div>
+      </div>
+      <button
+        id="fase-btn-${key}"
+        class="btn-phase-toggle ${locked ? 'btn-unlock' : 'btn-lock'}"
+        onclick="toggleFase('${key}')">
+        ${locked ? '🔓 Liberar' : '🔒 Travar'}
+      </button>
+    </div>`;
+  });
+  grid.innerHTML = html;
+}
+
+// ─── TABS & ROUNDS ────────────────────────────────────────────────────────────
 
 function showTab(tab, btn) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -511,7 +693,10 @@ function showTab(tab, btn) {
   btn.classList.add('active');
   document.getElementById('rodadasBar').style.display = tab === 'palpitar' ? 'flex' : 'none';
   if (tab === 'ranking') loadRanking();
-  if (tab === 'admin' && adminLoggedIn) loadAdminJogos();
+  if (tab === 'admin' && adminLoggedIn) {
+    loadAdminJogos();
+    renderPhaseControlGrid();
+  }
 }
 
 function showRodada(rodada, btn) {
@@ -521,23 +706,23 @@ function showRodada(rodada, btn) {
   btn.classList.add('active');
 }
 
+// ─── GAME CARDS ───────────────────────────────────────────────────────────────
+
 function buildGameCard(j) {
   const p = palpitesLocais[j.id] || { t1: '', t2: '' };
-  const f1 = flagHTML(j.time1);
-  const f2 = flagHTML(j.time2);
   return `
   <div class="game-card">
     <div class="game-info">
       <div class="game-meta">${j.data} &nbsp;·&nbsp; ${j.grupo}</div>
       <div class="game-teams">
         <div class="team-block">
-          ${f1}
+          ${flagHTML(j.time1)}
           <span class="team-name">${j.time1}</span>
         </div>
         <span class="vs-text">VS</span>
         <div class="team-block right">
           <span class="team-name">${j.time2}</span>
-          ${f2}
+          ${flagHTML(j.time2)}
         </div>
       </div>
     </div>
@@ -559,28 +744,37 @@ function renderGrupos(jogos, containerId) {
   let html = '';
   for (const grupo in grupos) {
     const isMata = !grupo.startsWith('Grupo');
-    if (isMata) {
-      html += `<div class="phase-header">🏆 ${grupo.toUpperCase()}</div>`;
-    } else {
-      html += `<div style="font-size:12px;font-weight:700;color:var(--green-main);text-transform:uppercase;letter-spacing:1px;margin:12px 0 8px">${grupo}</div>`;
-    }
+    html += isMata
+      ? `<div class="phase-header">🏆 ${grupo.toUpperCase()}</div>`
+      : `<div style="font-size:12px;font-weight:700;color:var(--green-main);text-transform:uppercase;letter-spacing:1px;margin:12px 0 8px">${grupo}</div>`;
     grupos[grupo].forEach(j => { html += buildGameCard(j); });
   }
   container.innerHTML = html;
 }
 
 function renderTodosJogos() {
-  renderGrupos(JOGOS_R1, 'jogosR1');
-  renderGrupos(JOGOS_R2, 'jogosR2');
-  renderGrupos(JOGOS_R3, 'jogosR3');
+  renderGrupos(JOGOS_R1,   'jogosR1');
+  renderGrupos(JOGOS_R2,   'jogosR2');
+  renderGrupos(JOGOS_R3,   'jogosR3');
   renderGrupos(JOGOS_MATA, 'jogosMata');
 }
 
 function savePalpiteLocal(jogoId) {
+  // Block saving if phase is locked
+  const fase = getFaseByJobId(jogoId);
+  if (fase && faseStatus[fase]) return;
   palpitesLocais[jogoId] = {
     t1: document.getElementById('p_' + jogoId + '_1').value,
     t2: document.getElementById('p_' + jogoId + '_2').value
   };
+}
+
+function getFaseByJobId(jogoId) {
+  if (JOGOS_R1.find(j => j.id === jogoId))   return 'r1';
+  if (JOGOS_R2.find(j => j.id === jogoId))   return 'r2';
+  if (JOGOS_R3.find(j => j.id === jogoId))   return 'r3';
+  if (JOGOS_MATA.find(j => j.id === jogoId)) return 'mata';
+  return null;
 }
 
 async function savePalpites() {
@@ -589,6 +783,9 @@ async function savePalpites() {
 
   const entries = [];
   JOGOS.forEach(j => {
+    const fase = getFaseByJobId(j.id);
+    if (fase && faseStatus[fase]) return; // skip locked phases
+
     const v1 = document.getElementById('p_' + j.id + '_1')?.value;
     const v2 = document.getElementById('p_' + j.id + '_2')?.value;
     if (v1 !== '' && v2 !== '' && v1 !== undefined && v2 !== undefined) {
@@ -596,9 +793,9 @@ async function savePalpites() {
     }
   });
 
-  if (!entries.length) { showToast('Preencha pelo menos um palpite!', true); return; }
+  if (!entries.length) { showToast('Preencha pelo menos um palpite em fase aberta!', true); return; }
 
-  const btn = document.querySelector('.btn-save');
+  const btn = document.querySelector('[onclick="savePalpites()"]');
   btn.disabled = true; btn.textContent = 'Salvando...';
 
   try {
@@ -614,6 +811,8 @@ async function savePalpites() {
   }
   btn.disabled = false; btn.textContent = 'Salvar palpites';
 }
+
+// ─── RANKING ──────────────────────────────────────────────────────────────────
 
 async function loadRanking() {
   const c = document.getElementById('rankingContainer');
@@ -650,6 +849,8 @@ function renderRanking(ranking) {
   c.innerHTML = html;
 }
 
+// ─── ADMIN ────────────────────────────────────────────────────────────────────
+
 async function adminLogin() {
   const pass = document.getElementById('adminPass').value;
   try {
@@ -659,6 +860,7 @@ async function adminLogin() {
       adminLoggedIn = true;
       document.getElementById('adminLock').style.display = 'none';
       document.getElementById('adminPanel').classList.add('active');
+      renderPhaseControlGrid();
       loadAdminJogos();
     } else showToast('Senha incorreta!', true);
   } catch (e) { showToast('Erro de conexão.', true); }
@@ -721,6 +923,8 @@ async function saveResultados() {
   } catch (e) { showToast('Erro de conexão.', true); }
 }
 
+// ─── TOAST ────────────────────────────────────────────────────────────────────
+
 function showToast(msg, isError = false) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -730,7 +934,10 @@ function showToast(msg, isError = false) {
   setTimeout(() => t.classList.remove('show'), 3000);
 }
 
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+
 renderTodosJogos();
+loadFaseStatus(); // fetch lock status and apply to UI
 </script>
 </body>
 </html>
